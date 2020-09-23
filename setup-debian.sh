@@ -16,8 +16,9 @@ sudo apt-get install apt-fast
 # For sar for tmux-plugins/tmux-cpu
 apt-fast install \
 	direnv \
+	libsource-highlight-common \
 	ripgrep \
-	# For sar for tmux-plugins/tmux-cpu
+	source-highlight \
 	sysstat \
 	tmux \
 	zsh
@@ -33,6 +34,8 @@ if [[ ! -d ~/.tmux/plugins/tpm ]]; then
 	mkdir -p ~/.tmux/plugins
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
+
+~/.tmux/plugins/tpm/bindings/install_plugins
 
 # From https://medium.com/@oliverspryn/adding-git-completion-to-zsh-60f3b0e7ffbc
 mkdir -p ~/.zsh
