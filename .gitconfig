@@ -1,0 +1,37 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Gary Miguel
+	email = garymm@gmail.com
+[http]
+	cookiefile = ~/.gitcookies
+[grep]
+	extendedRegexp = true
+[pager]
+	branch = false
+[alias]
+	amend = commit --all --amend --no-edit
+	icd = icdiff
+	upload = push origin HEAD:refs/for/master
+	log-graph = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+	dt = difftool
+	rbc = rebase --continue
+	rbom = rebase origin/master
+[icdiff]
+	options = --line-numbers
+[diff]
+	tool = vscode
+[difftool]
+	prompt = false
+[difftool "vscode"]
+	cmd = ~/bin/editor.sh --diff $LOCAL $REMOTE
+[merge]
+	tool = vscode
+[mergetool "vscode"]
+	cmd = ~/bin/editor.sh --wait $MERGED
+[log]
+	# opt in to new behavior to supress warning messages
+	mailmap = true
+	date = format-local:%Y-%m-%d %H:%M:%S
+[pull]
+	ff = only
+
