@@ -91,7 +91,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-if [[ -n "${SSH_CONNECTION}" ]] && [[ "${TERM_PROGRAM}" -eq "vscode" ]]; then
+if [[ "${TERM_PROGRAM}" -eq "vscode" ]]; then
   export EDITOR="${HOME}/bin/editor.sh"
 else
   export EDITOR="vim"
