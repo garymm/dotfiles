@@ -3,7 +3,7 @@
 set -o errexit
 set -o pipefail
 
-git config --global user.email "garymm@gmail.com"
+git config --global user.email "garymm@garymm.org"
 git config --global user.name "Gary Miguel"
 
 sudo adduser "${USER}" sudo
@@ -17,6 +17,9 @@ sudo apt-get install apt-fast
 apt-fast install \
 	direnv \
 	libsource-highlight-common \
+	msmtp-mta \
+	# for msmtp oath2tool.sh
+	pass \
 	ripgrep \
 	source-highlight \
 	sysstat \
@@ -51,3 +54,9 @@ cp -r .oh-my-zsh ~/
 cp .tmux.conf ~/
 mkdir -p ~/bin
 cp editor.sh ~/bin/
+cp oauth2tool.sh ~/bin/
+cp oauth2.py ~/bin/
+sudo cp msmtprc /usr/local/etc/msmtprc
+sudo ln -s /usr/local/etc/msmtprc /etc/msmtprc
+cp msmtprc ~/.msmtprc
+
