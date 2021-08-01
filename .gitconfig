@@ -1,7 +1,7 @@
 # This is Git's per-user configuration file.
 [user]
 	name = Gary Miguel
-	email = garymm@gmail.com
+	email = garymm@garymm.org
 [http]
 	cookiefile = ~/.gitcookies
 [grep]
@@ -11,7 +11,6 @@
 [alias]
 	amend = commit --all --amend --no-edit
 	icd = icdiff
-	upload = push origin HEAD:refs/for/master
 	log-graph = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
 	dt = difftool
 	rbc = rebase --continue
@@ -34,4 +33,6 @@
 	date = format-local:%Y-%m-%d %H:%M:%S
 [pull]
 	ff = only
-
+[push]
+	recurseSubmodules = check
+	default = current
