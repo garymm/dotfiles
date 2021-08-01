@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# TODO: Add a flag to control whether or not email (msmtp)
+# is set up. I only need that for home servers, not work machines.
+
 set -o errexit
 set -o pipefail
 
@@ -13,12 +16,13 @@ sudo add-apt-repository ppa:apt-fast/stable
 sudo apt-get update
 sudo apt-get install apt-fast
 
-# For sar for tmux-plugins/tmux-cpu
+# sysstat contains sar for tmux-plugins/tmux-cpu
+# pass is for msmtp oath2tool.sh
 apt-fast install \
 	direnv \
+	icdiff \
 	libsource-highlight-common \
 	msmtp-mta \
-	# for msmtp oath2tool.sh
 	pass \
 	ripgrep \
 	source-highlight \
@@ -26,19 +30,17 @@ apt-fast install \
 	tmux \
 	zsh
 
+# This doesn't seem to work on GCP or Azure VM's.
 chsh -s $(which zsh)
 
 if [[ ! -d ~/.fzf ]]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install
 fi
 
 if [[ ! -d ~/.tmux/plugins/tpm ]]; then
 	mkdir -p ~/.tmux/plugins
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+	git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
-
-~/.tmux/plugins/tpm/bindings/install_plugins
 
 # From https://medium.com/@oliverspryn/adding-git-completion-to-zsh-60f3b0e7ffbc
 mkdir -p ~/.zsh
@@ -51,9 +53,13 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 # Install dotfiles from this repo
 cp .zshrc ~/
 cp -r .oh-my-zsh ~/
+
 cp .tmux.conf ~/
+~/.tmux/plugins/tpm/bin/install_plugins
+
 mkdir -p ~/bin
 cp editor.sh ~/bin/
+
 cp oauth2tool.sh ~/bin/
 cp oauth2.py ~/bin/
 sudo cp msmtprc /usr/local/etc/msmtprc
@@ -61,3 +67,4 @@ sudo ln -s /usr/local/etc/msmtprc /etc/msmtprc
 touch /var/log/msmtp
 chmod ugo+w /var/log/msmtp
 
+cp .gitconfig ~/.gitconfig
