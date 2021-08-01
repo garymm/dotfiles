@@ -5,6 +5,7 @@
 
 set -o errexit
 set -o pipefail
+set -o xtrace
 
 git config --global user.email "garymm@garymm.org"
 git config --global user.name "Gary Miguel"
@@ -48,7 +49,9 @@ curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/mas
 curl -o ~/.zsh/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
 
 # Install oh-my-zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+if [[ ! -d ~/.oh-my-zsh ]]; then
+	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
 
 # Install dotfiles from this repo
 cp .zshrc ~/
