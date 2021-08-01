@@ -51,25 +51,36 @@ COMPLETION_WAITING_DOTS="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+export FZF_BASE="${HOME}/.fzf"
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   colored-man-pages
+  direnv
   docker
-  ssh-agent
+  fzf
   tmux
   zsh-interactive-cd
 )
+
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# TODO: This needs to be in .profile because I first log in using bash and then
-# open tmux which syncs the PATH. I should really change the login shell to zsh?
-# export PATH="${HOME}/bin:${HOME}/.local/bin:${HOME}/go/bin:/usr/local/go/bin:${PATH}"
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    export PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -120,22 +131,62 @@ fcod() {
   [[ -n "$files" ]] && code "${files[@]}"
 }
 
-# Create a new branch tracking master
+# Create a new branch tracking origin
 function gnb {
-  git switch --track --create "$@" master
+  git switch --create "$@" master
+  git branch --set-upstream-to "origin/$@"
 }
 
-# direnv
-eval "$(direnv hook zsh)"
+function echoerr() {
+  echo "$@" 1>&2
+}
 
 # VSCode remote workflow sets PATH when connecting to the server.
 # But existing shells in tmux windows don't get the updated PATH, unless we
 # run this to move environment variables from tmux into the shell.
+
+function update_path {
+  IFS=':' read -r -A input_array <<< "${1}"
+  local new_vscode_server_bin=""
+  for element in "${input_array[@]}"; do
+    if [[ "${element}" == *.vscode-server/bin* ]]; then
+      new_vscode_server_bin="${element}"
+    fi
+  done
+  if [[ -z "${new_vscode_server_bin}" ]]; then
+    echoerr "input did not contain vscode-server/bin"
+    return 1
+  fi
+
+  local replaced_vscode_server_bin=0
+
+  IFS=':' read -r -A path_array <<< "${PATH}"
+  for (( i = 1; i <= ${#path_array}; i++ )) do
+    if [[ "${path_array[i]}" == *.vscode-server/bin* ]]; then
+      if [ ${replaced_vscode_server_bin} -eq 0 ]; then
+        path_array[i]="${new_vscode_server_bin}"
+        replaced_vscode_server_bin=1
+      else
+        path_array[i]=()
+      fi
+    fi
+  done
+
+  local with_leading_colon=$(printf ":%s" "${path_array[@]}")
+  # strip leading colon
+  echo "${with_leading_colon:1}"
+}
+
 if [ -n "$TMUX" ]; then
   function refresh_env {
     IFS=$'\n' VARS=($(tmux show-environment | grep -v '^-'))
     for VAR in $VARS; do
-      export $VAR
+      local path_prefix_len=$(expr match "$VAR" '^PATH=')
+      if [ ${path_prefix_len} -gt 0 ]; then
+        export PATH=$(update_path "${VAR:${path_prefix_len}}")
+      else
+        export $VAR
+      fi
     done
   }
 else
@@ -144,8 +195,6 @@ fi
 
 # Ensures PATH can find vscode
 alias code='refresh_env && \code'
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 mkdir -p /tmp/ssh-master
 
@@ -156,3 +205,4 @@ mkdir -p /tmp/ssh-master
 zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
 fpath=(~/.zsh $fpath)
 autoload -Uz compinit && compinit
+
