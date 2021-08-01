@@ -62,6 +62,7 @@ plugins=(
   direnv
   docker
   fzf
+  gitfast
   tmux
   zsh-interactive-cd
 )
@@ -197,12 +198,4 @@ fi
 alias code='refresh_env && \code'
 
 mkdir -p /tmp/ssh-master
-
-# Load Git completion
-# From https://medium.com/@oliverspryn/adding-git-completion-to-zsh-60f3b0e7ffbc
-# Not using gitfast plugin because of
-# https://github.com/ohmyzsh/ohmyzsh/issues/8894
-zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
-fpath=(~/.zsh $fpath)
-autoload -Uz compinit && compinit
 

@@ -43,11 +43,6 @@ if [[ ! -d ~/.tmux/plugins/tpm ]]; then
 	git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
-# From https://medium.com/@oliverspryn/adding-git-completion-to-zsh-60f3b0e7ffbc
-mkdir -p ~/.zsh
-curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-curl -o ~/.zsh/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
-
 # Install oh-my-zsh
 if [[ ! -d ~/.oh-my-zsh ]]; then
 	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
