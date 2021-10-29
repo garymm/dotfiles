@@ -36,7 +36,8 @@ chsh -s $(which zsh)
 
 if [[ ! -d ~/.fzf ]]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install
+	# oh-my-zsh plugin takes care of all of the `--no` things.
+	~/.fzf/install --no-key-bindings --no-completion --no-update-rc
 fi
 
 if [[ ! -d ~/.tmux/plugins/tpm ]]; then
