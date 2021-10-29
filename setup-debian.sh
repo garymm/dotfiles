@@ -58,6 +58,8 @@ cp .tmux.conf ~/
 mkdir -p ~/bin
 cp editor.sh ~/bin/
 
+cp .direnvrc ~/
+
 cp oauth2tool.sh ~/bin/
 cp oauth2.py ~/bin/
 sudo cp msmtprc /usr/local/etc/msmtprc
