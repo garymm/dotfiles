@@ -6,52 +6,7 @@ export ZSH=${HOME}/.oh-my-zsh
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="garymm"
 
-# Set list of themes to load
-# Setting this variable when ZSH_THEME=random
-# cause zsh load theme from this variable instead of
-# looking in ~/.oh-my-zsh/themes/
-# An empty array have no effect
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-export FZF_BASE="${HOME}/.fzf"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -60,12 +15,33 @@ export FZF_BASE="${HOME}/.fzf"
 plugins=(
   colored-man-pages
   direnv
-  docker
   fzf
   gitfast
-  tmux
   zsh-interactive-cd
 )
+
+if [[ $(uname) -eq "Darwin" ]]; then
+  # https://apple.stackexchange.com/q/269324/34090
+  export LC_ALL=en_US.UTF-8
+  export LANG=en_US.UTF-8
+
+  if [[ $(uname -m) -eq "arm64" ]]; then
+    BREW_PREFIX=/opt/homebrew
+  else
+    BREW_PREFIX=/usr/local
+  fi
+  export FZF_BASE=${BREW_PREFIX}/opt/fzf/
+  LESSPIPE="${BREW_PREFIX}/bin/src-hilite-lesspipe.sh"
+  # Required so that zsh-interactive-cd will find gnu-sed.
+  PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
+  plugins+=(brew)
+else
+  # On Linux I install from source, see setup-debian.sh
+  export FZF_BASE="${HOME}/.fzf"
+  LESSPIPE="/usr/share/source-highlight/src-hilite-lesspipe.sh"
+  plugins+=(tmux docker)
+fi
+
 
 
 source $ZSH/oh-my-zsh.sh
@@ -82,28 +58,7 @@ if [ -d "$HOME/.local/bin" ] ; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-if [[ "${TERM_PROGRAM}" -eq "vscode" ]]; then
+if [[ -z "${SSH_CLIENT}" || "${TERM_PROGRAM}" -eq "vscode" ]]; then
   export EDITOR="${HOME}/bin/editor.sh"
 else
   export EDITOR="vim"
@@ -112,7 +67,7 @@ fi
 alias ls='ls -FG' # G is color, F is trailing slashes, etc.
 alias sed='sed --regexp-extended'
 alias curl='curl --location' # follow redirects
-export LESSOPEN='| /usr/share/source-highlight/src-hilite-lesspipe.sh %s'
+export LESSOPEN="| ${LESSPIPE} %s"
 export LESS=' --LONG-PROMPT --RAW-CONTROL-CHARS --quit-on-intr '
 # https://superuser.com/a/1321991
 export MANPAGER='less +Gg'
@@ -128,7 +83,13 @@ fbr() {
 # fuzzy match and then run VSCode
 fcod() {
   local files
-  IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+  local FZF
+  if [[ -n "$TMUX" ]]; then
+    FZF=fzf-tmux
+  else
+    FZF=fzf
+  fi
+  IFS=$'\n' files=($("${FZF}" --query="$1" --multi --select-1 --exit-0))
   [[ -n "$files" ]] && code "${files[@]}"
 }
 
@@ -190,12 +151,8 @@ if [ -n "$TMUX" ]; then
       fi
     done
   }
-else
-  function refresh_env { }
+  # Ensures PATH can find vscode
+  alias code='refresh_env && \code'
 fi
 
-# Ensures PATH can find vscode
-alias code='refresh_env && \code'
-
 mkdir -p /tmp/ssh-master
-

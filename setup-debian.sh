@@ -7,9 +7,6 @@ set -o errexit
 set -o pipefail
 set -o xtrace
 
-git config --global user.email "garymm@garymm.org"
-git config --global user.name "Gary Miguel"
-
 sudo adduser "${USER}" sudo
 
 # Install apt-fast
