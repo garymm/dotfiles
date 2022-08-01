@@ -1,4 +1,32 @@
 [
+    // Begin swap save and save-all
     { "key": "cmd+k s", "command": "workbench.action.files.save" },
-    { "key": "cmd+s", "command": "workbench.action.files.saveAll" }
+    {
+        "key": "cmd+s",
+        "command": "workbench.action.files.saveAll"
+    },
+    // End swap save and save-all
+    // Begin working around
+    // https://github.com/microsoft/vscode/issues/138384
+    {
+        "key": "alt+cmd+-",
+        "command": "editor.fold",
+        "when": "editorTextFocus && foldingEnabled"
+    },
+    {
+        "key": "alt+cmd+[",
+        "command": "-editor.fold",
+        "when": "editorTextFocus && foldingEnabled"
+    },
+    {
+        "key": "alt+cmd+=",
+        "command": "editor.unfold",
+        "when": "editorTextFocus && foldingEnabled"
+    },
+    {
+        "key": "alt+cmd+]",
+        "command": "-editor.unfold",
+        "when": "editorTextFocus && foldingEnabled"
+    }
+    // End working around
 ]
