@@ -34,6 +34,7 @@ ${BREW} install \
 
 # Install casks
 ${BREW} install --cask \
+    anaconda \
     font-fira-code \
     kitty \
     stats \
