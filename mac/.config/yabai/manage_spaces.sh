@@ -2,18 +2,18 @@
 
 set -o errexit
 set -o pipefail
-set -o xtrace
+
+function cur_space() {
+    echo $(yabai -m query --spaces --space | jq '.index')
+}
 
 readonly N_DISPLAYS=$(yabai -m query --displays | jq length)
-readonly CUR_DISPLAY=$(yabai -m query --displays --display | jq '.index')
+readonly INITIAL_DISPLAY=$(yabai -m query --displays --display | jq '.index')
 readonly N_SPACES=$(yabai -m query --spaces | jq 'map(select(."is-native-fullscreen" == false)) | length')
-readonly CUR_SPACE=$(yabai -m query --spaces --space | jq '.index')
+readonly INITIAL_SPACE=$(cur_space)
 
 function create_up_to_n_spaces() {
     local -r n="${1}"
-    if [[ "${n}" -le "${N_SPACES}" ]]; then
-        return
-    fi
     for ((i=1; i <= n; i++)); do
         if [[ "${i}" -gt "${N_SPACES}" ]]; then
             yabai -m space --create
@@ -41,7 +41,9 @@ function display_for_space() {
 function init() {
     local -r n="${1}"
     create_up_to_n_spaces "$((n * N_DISPLAYS))"
-    yabai -m space --focus "${CUR_SPACE}"
+    if [[ "${INITIAL_SPACE}" -ne $(cur_space) ]]; then
+        yabai -m space --focus "${INITIAL_SPACE}"
+    fi
 }
 
 function focus_offset() {
@@ -50,7 +52,7 @@ function focus_offset() {
         return
     fi
     local -r offset="${1}"
-    local -r cur_space_on_disp1=$((CUR_SPACE - (CUR_DISPLAY-1) * N_SPACES / N_DISPLAYS))
+    local -r cur_space_on_disp1=$((INITIAL_SPACE - (INITIAL_DISPLAY-1) * N_SPACES / N_DISPLAYS))
     if [[ "${offset}" == -1 && "${cur_space_on_disp1}" == 1 ]]; then
         return 0
     elif [[ "${offset}" == 1 && "${cur_space_on_disp1}" == $((N_SPACES / N_DISPLAYS)) ]]; then
@@ -66,13 +68,13 @@ function focus() {
         local target_space=$((target_space_on_disp1 + (i - 1) * N_SPACES / N_DISPLAYS))
         yabai -m space --focus "${target_space}"
     done
-    yabai -m display --focus "${CUR_DISPLAY}"
+    yabai -m display --focus "${INITIAL_DISPLAY}"
 }
 
 function send_to() {
     # TODO: Handle full screen properly.
     local -r target_space_on_disp1="${1}"
-    local target_space=$((target_space_on_disp1 + (CUR_DISPLAY - 1) * N_SPACES / N_DISPLAYS))
+    local target_space=$((target_space_on_disp1 + (INITIAL_DISPLAY - 1) * N_SPACES / N_DISPLAYS))
     yabai -m window --space "${target_space}"
 }
 
