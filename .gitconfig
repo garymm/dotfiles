@@ -26,7 +26,7 @@
 [merge]
 	tool = vscode
 [mergetool "vscode"]
-	cmd = ~/bin/editor.sh --wait $MERGED
+	cmd = ~/bin/editor.sh --merge $REMOTE $LOCAL $BASE $MERGED
 [log]
 	# opt in to new behavior to supress warning messages
 	mailmap = true
