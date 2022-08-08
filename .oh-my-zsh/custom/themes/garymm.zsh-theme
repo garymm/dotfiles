@@ -1,6 +1,7 @@
 # garymm ZSH Theme
 
-local ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[black]%}➜ )"
+# See color values: https://stackoverflow.com/a/49752003
+local ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[162]%}➜ )"
 
 PROMPT='${_current_dir} $(git_prompt_info)
 ${ret_status}%{$resetcolor%} '
