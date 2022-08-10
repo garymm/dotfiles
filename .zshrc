@@ -20,11 +20,12 @@ plugins=(
   zsh-interactive-cd
 )
 
-if [[ $(uname) -eq "Darwin" ]]; then
-  # https://apple.stackexchange.com/q/269324/34090
-  export LC_ALL=en_US.UTF-8
-  export LANG=en_US.UTF-8
+# Seems required for kitty, but probably doesn't hurt otherwise.
+# https://apple.stackexchange.com/q/269324/34090
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
+if [[ $(uname) -eq "Darwin" ]]; then
   if [[ $(uname -m) -eq "arm64" ]]; then
     BREW_PREFIX=/opt/homebrew
   else
@@ -41,8 +42,6 @@ else
   LESSPIPE="/usr/share/source-highlight/src-hilite-lesspipe.sh"
   plugins+=(tmux docker)
 fi
-
-
 
 source $ZSH/oh-my-zsh.sh
 
