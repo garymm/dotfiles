@@ -156,3 +156,14 @@ if [ -n "$TMUX" ]; then
 fi
 
 mkdir -p /tmp/ssh-master
+
+# https://sw.kovidgoyal.net/kitty/kittens/ssh/
+SSH_BIN=$(which -a ssh | grep '^/')
+
+function ssh {
+  if [[ "${TERM}" == "xterm-kitty" ]]; then
+    kitty +kitten ssh "$@"
+  else
+    "${SSH_BIN}" "$@"
+  fi
+}
