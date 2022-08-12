@@ -57,7 +57,6 @@ cp editor.sh ~/bin
 cp .zshrc ~/
 cp -r .oh-my-zsh ~/
 
-cp .direnvrc ~/
 
 cp .gitconfig ~/.gitconfig
 

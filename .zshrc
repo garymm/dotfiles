@@ -37,7 +37,8 @@ if [[ $(uname) -eq "Darwin" ]]; then
   PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
   # Use brew's ruby gems
   PATH="${BREW_PREFIX}/lib/ruby/gems/3.1.0/bin:$PATH"
-  plugins+=(brew)
+  # Use brew binaries by default
+  PATH="${BREW_PREFIX}/bin:$PATH"
 else
   # On Linux I install from source, see setup-debian.sh
   export FZF_BASE="${HOME}/.fzf"
