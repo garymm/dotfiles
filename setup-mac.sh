@@ -50,15 +50,17 @@ if [[ ! -d ~/.oh-my-zsh ]]; then
 	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
-mkdir -p ~/bin
-cp editor.sh ~/bin
+cp -r bin ~/
 
 # Install dotfiles from this repo
 cp .zshrc ~/
 cp -r .oh-my-zsh ~/
 
 
-cp .gitconfig ~/.gitconfig
+cp .gitconfig ~/
 
 cp -r mac/.config ~/
 cp -r mac/Library ~/
+
+curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
+chmod +x ~/bin/git-pair

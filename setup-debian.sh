@@ -54,8 +54,9 @@ cp -r .oh-my-zsh ~/
 cp .tmux.conf ~/
 ~/.tmux/plugins/tpm/bin/install_plugins
 
-mkdir -p ~/bin
-cp editor.sh ~/bin/
+cp -r bin ~/
+curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
+chmod +x ~/bin/git-pair
 
 cp oauth2tool.sh ~/bin/
 cp oauth2.py ~/bin/
@@ -64,4 +65,4 @@ sudo ln -s /usr/local/etc/msmtprc /etc/msmtprc
 touch /var/log/msmtp
 chmod ugo+w /var/log/msmtp
 
-cp .gitconfig ~/.gitconfig
+cp .gitconfig ~/
