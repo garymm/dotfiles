@@ -35,6 +35,8 @@ if [[ $(uname) -eq "Darwin" ]]; then
   LESSPIPE="${BREW_PREFIX}/bin/src-hilite-lesspipe.sh"
   # Required so that zsh-interactive-cd will find gnu-sed.
   PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
+  # Use brew's ruby gems
+  PATH="${BREW_PREFIX}/lib/ruby/gems/3.1.0/bin:$PATH"
   plugins+=(brew)
 else
   # On Linux I install from source, see setup-debian.sh
