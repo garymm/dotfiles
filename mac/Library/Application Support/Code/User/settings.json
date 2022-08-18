@@ -1,10 +1,12 @@
 {
     "editor.fontFamily": "Fira Code",
     "editor.fontLigatures": true,
+    "editor.formatOnSave": true,
+    "editor.inlineSuggest.enabled": true,
     "editor.minimap.enabled": false,
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
-    "files.autoSave": "afterDelay",
+    "files.autoSave": "onFocusChange",
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "git.confirmSync": false,
@@ -15,5 +17,7 @@
         "markdown": false,
         "git-commit": false
     },
-    "security.workspace.trust.untrustedFiles": "open"
+    "go.toolsManagement.autoUpdate": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.editor.revealIfOpen": true
 }

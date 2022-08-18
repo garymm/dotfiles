@@ -13,6 +13,7 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  bazel
   colored-man-pages
   direnv
   fzf
@@ -169,3 +170,9 @@ function ssh {
     "${SSH_BIN}" "$@"
   fi
 }
+
+# https://github.com/kovidgoyal/kitty/issues/838#issuecomment-770328902
+if [[ "${TERM}" == "xterm-kitty" ]]; then
+  bindkey "\e[1;3D" backward-word # ⌥←
+  bindkey "\e[1;3C" forward-word # ⌥→
+fi

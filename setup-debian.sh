@@ -50,6 +50,7 @@ fi
 # Install dotfiles from this repo
 cp .zshrc ~/
 cp -r .oh-my-zsh ~/
+curl -o ~/.oh-my-zsh/plugins https://raw.githubusercontent.com/bazelbuild/bazel/master/scripts/zsh_completion/_bazel
 
 cp .tmux.conf ~/
 ~/.tmux/plugins/tpm/bin/install_plugins
