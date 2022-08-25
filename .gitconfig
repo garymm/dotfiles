@@ -36,3 +36,5 @@
 [push]
 	recurseSubmodules = check
 	default = current
+[init]
+	defaultBranch = master
