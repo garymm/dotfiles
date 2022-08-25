@@ -7,9 +7,9 @@ set -o xtrace
 sudo adduser "${USER}" sudo
 
 # Install apt-fast
-sudo add-apt-repository ppa:apt-fast/stable
+sudo add-apt-repository -y ppa:apt-fast/stable
 sudo apt-get update
-sudo apt-get install apt-fast
+sudo apt-get install -y apt-fast
 
 email=""
 
@@ -29,7 +29,7 @@ while [ "$1" != "" ]; do
 done
 
 # sysstat contains sar for tmux-plugins/tmux-cpu
-apt-fast install \
+apt-fast install -y \
 	direnv \
 	icdiff \
 	libsource-highlight-common \
@@ -61,7 +61,6 @@ fi
 # Install dotfiles from this repo
 cp .zshrc ~/
 cp -r .oh-my-zsh ~/
-curl -o ~/.oh-my-zsh/plugins https://raw.githubusercontent.com/bazelbuild/bazel/master/scripts/zsh_completion/_bazel
 
 cp .tmux.conf ~/
 ~/.tmux/plugins/tpm/bin/install_plugins
