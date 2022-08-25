@@ -164,10 +164,15 @@ mkdir -p /tmp/ssh-master
 SSH_BIN=$(which -a ssh | grep '^/')
 
 function ssh {
+  local PREFIX=""
+  local SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+  if [[ $(uname) -eq "Darwin" ]] && [[ -S "${SOCK}" ]]; then
+    PREFIX="SSH_AUTH_SOCK=${SOCK}"
+  fi
   if [[ "${TERM}" == "xterm-kitty" ]]; then
-    kitty +kitten ssh "$@"
+    env "${PREFIX}" kitty +kitten ssh "$@"
   else
-    "${SSH_BIN}" "$@"
+    env "${PREFIX}" "${SSH_BIN}" "$@"
   fi
 }
 
