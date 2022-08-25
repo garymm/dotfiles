@@ -68,7 +68,9 @@ function focus() {
         local target_space=$((target_space_on_disp1 + (i - 1) * N_SPACES / N_DISPLAYS))
         yabai -m space --focus "${target_space}"
     done
-    yabai -m display --focus "${INITIAL_DISPLAY}"
+    if [[ "${N_DISPLAYS}" -gt 1 ]]; then
+        yabai -m display --focus "${INITIAL_DISPLAY}"
+    fi
 }
 
 function send_to() {
