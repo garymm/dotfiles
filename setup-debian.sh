@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO: Add a flag to control whether or not email (msmtp)
-# is set up. I only need that for home servers, not work machines.
-
 set -o errexit
 set -o pipefail
 set -o xtrace
@@ -14,14 +11,28 @@ sudo add-apt-repository ppa:apt-fast/stable
 sudo apt-get update
 sudo apt-get install apt-fast
 
+email=""
+
+function usage {
+	echo "Usage: $0 [--setup-email]"
+}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        --setup-email )     shift
+							email="1"
+							;;
+		* )                 usage
+							exit 1
+    esac
+    shift
+done
+
 # sysstat contains sar for tmux-plugins/tmux-cpu
-# pass is for msmtp oath2tool.sh
 apt-fast install \
 	direnv \
 	icdiff \
 	libsource-highlight-common \
-	msmtp-mta \
-	pass \
 	ripgrep \
 	source-highlight \
 	sysstat \
@@ -59,11 +70,16 @@ cp -r bin ~/
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
 chmod +x ~/bin/git-pair
 
-cp oauth2tool.sh ~/bin/
-cp oauth2.py ~/bin/
-sudo cp msmtprc /usr/local/etc/msmtprc
-sudo ln -s /usr/local/etc/msmtprc /etc/msmtprc
-touch /var/log/msmtp
-chmod ugo+w /var/log/msmtp
-
 cp .gitconfig ~/
+
+if [[ -n "${email}" ]]; then
+	# pass is for oath2tool.sh
+	apt-fast install msmtp-mta pass
+	cp oauth2tool.sh ~/bin/
+	cp oauth2.py ~/bin/
+	sudo cp msmtprc /usr/local/etc/msmtprc
+	sudo ln -s /usr/local/etc/msmtprc /etc/msmtprc
+	touch /var/log/msmtp
+	chmod ugo+w /var/log/msmtp
+fi
+
