@@ -55,6 +55,7 @@ cp -r bin ~/
 # Install dotfiles from this repo
 cp .zshrc ~/
 cp -r .oh-my-zsh ~/
+git clone https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 
 cp .gitconfig ~/
 

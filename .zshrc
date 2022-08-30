@@ -26,6 +26,9 @@ plugins=(
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+# https://unix.stackexchange.com/a/62599/88047
+typeset -U path PATH
+
 if [[ $(uname) -eq "Darwin" ]]; then
   if [[ $(uname -m) -eq "arm64" ]]; then
     BREW_PREFIX=/opt/homebrew
@@ -34,12 +37,10 @@ if [[ $(uname) -eq "Darwin" ]]; then
   fi
   export FZF_BASE=${BREW_PREFIX}/opt/fzf/
   LESSPIPE="${BREW_PREFIX}/bin/src-hilite-lesspipe.sh"
-  # Required so that zsh-interactive-cd will find gnu-sed.
-  PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
   # Use brew's ruby gems
-  PATH="${BREW_PREFIX}/lib/ruby/gems/3.1.0/bin:$PATH"
+  path=("${BREW_PREFIX}/lib/ruby/gems/3.1.0/bin" "$path[@]")
   # Use brew binaries by default
-  PATH="${BREW_PREFIX}/bin:$PATH"
+  path=("${BREW_PREFIX}/bin" "$path[@]")
 else
   # On Linux I install from source, see setup-debian.sh
   export FZF_BASE="${HOME}/.fzf"
@@ -53,12 +54,12 @@ source $ZSH/oh-my-zsh.sh
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
-    export PATH="$HOME/bin:$PATH"
+    path=("$HOME/bin" "$path[@]")
 fi
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then
-    export PATH="$HOME/.local/bin:$PATH"
+    path=("$HOME/.local/bin" "$path[@]")
 fi
 
 if [[ -z "${SSH_CLIENT}" || "${TERM_PROGRAM}" -eq "vscode" ]]; then
