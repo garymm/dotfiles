@@ -27,6 +27,7 @@ ${BREW} tap homebrew/cask-fonts
 ${BREW} install \
     fzf \
     gnu-sed \
+    icdiff \
     jq \
     koekeishiya/formulae/skhd \
     koekeishiya/formulae/yabai \
