@@ -69,7 +69,7 @@ else
 fi
 
 alias ls='ls -FG' # G is color, F is trailing slashes, etc.
-alias sed='sed --regexp-extended'
+alias sed='sed -r'
 alias curl='curl --location' # follow redirects
 export LESSOPEN="| ${LESSPIPE} %s"
 export LESS=' --LONG-PROMPT --RAW-CONTROL-CHARS --quit-on-intr '
@@ -165,16 +165,19 @@ mkdir -p /tmp/ssh-master
 SSH_BIN=$(which -a ssh | grep '^/')
 
 function ssh {
-  local PREFIX=""
-  local SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
-  if [[ $(uname) -eq "Darwin" ]] && [[ -S "${SOCK}" ]]; then
-    PREFIX="SSH_AUTH_SOCK=${SOCK}"
-  fi
+  declare -a command=( "$@" )
+  # TODO: un-comment once agent forwarding is fixed
+  # https://1password.community/discussion/comment/653379#Comment_653379
+  # local SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+  # if [[ $(uname) -eq "Darwin" ]] && [[ -S "${SOCK}" ]]; then
+  #   command[1,0]=( env SSH_AUTH_SOCK=${SOCK}" )
+  # fi
   if [[ "${TERM}" == "xterm-kitty" ]]; then
-    env "${PREFIX}" kitty +kitten ssh "$@"
+    command[1,0]=( kitty +kitten ssh )
   else
-    env "${PREFIX}" "${SSH_BIN}" "$@"
+    command[1,0]=( "${SSH_BIN}" )
   fi
+  "$command[@]"
 }
 
 # https://github.com/kovidgoyal/kitty/issues/838#issuecomment-770328902
