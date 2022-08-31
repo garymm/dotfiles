@@ -162,7 +162,7 @@ fi
 mkdir -p /tmp/ssh-master
 
 # https://sw.kovidgoyal.net/kitty/kittens/ssh/
-SSH_BIN=$(which -a ssh | grep '^/')
+SSH_BIN=$(which -a ssh | grep '^/' | head -1)
 
 function ssh {
   declare -a command=( "$@" )
@@ -172,7 +172,7 @@ function ssh {
   # if [[ $(uname) -eq "Darwin" ]] && [[ -S "${SOCK}" ]]; then
   #   command[1,0]=( env SSH_AUTH_SOCK=${SOCK}" )
   # fi
-  if [[ "${TERM}" == "xterm-kitty" ]]; then
+  if [[ "${TERM}" == "xterm-kitty" ]] && command -v kitty &> /dev/null; then
     command[1,0]=( kitty +kitten ssh )
   else
     command[1,0]=( "${SSH_BIN}" )
