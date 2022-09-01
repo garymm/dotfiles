@@ -72,6 +72,11 @@ chmod +x ~/bin/git-pair
 
 cp .gitconfig ~/
 
+# Passwordless sudo
+# echo "${USER} ALL=(ALL) NOPASSWD: ALL" > "/tmp/${USER}"
+# sudo mv "/tmp/${USER}" /etc/sudoers.d/
+# sudo chown root /etc/sudoers.d/${USER}
+
 if [[ -n "${email}" ]]; then
 	# pass is for oath2tool.sh
 	apt-fast install msmtp-mta pass
