@@ -29,8 +29,8 @@ export LANG=en_US.UTF-8
 # https://unix.stackexchange.com/a/62599/88047
 typeset -U path PATH
 
-if [[ $(uname) -eq "Darwin" ]]; then
-  if [[ $(uname -m) -eq "arm64" ]]; then
+if [[ $(uname) == "Darwin" ]]; then
+  if [[ $(uname -m) == "arm64" ]]; then
     BREW_PREFIX=/opt/homebrew
   else
     BREW_PREFIX=/usr/local
@@ -62,7 +62,7 @@ if [ -d "$HOME/.local/bin" ] ; then
     path=("$HOME/.local/bin" "$path[@]")
 fi
 
-if [[ -z "${SSH_CLIENT}" || "${TERM_PROGRAM}" -eq "vscode" ]]; then
+if [[ -z "${SSH_CLIENT}" || "${TERM_PROGRAM}" == "vscode" ]]; then
   export EDITOR="${HOME}/bin/editor.sh"
 else
   export EDITOR="vim"
@@ -129,7 +129,7 @@ function update_path {
   IFS=':' read -r -A path_array <<< "${PATH}"
   for (( i = 1; i <= ${#path_array}; i++ )) do
     if [[ "${path_array[i]}" == *.vscode-server/bin* ]]; then
-      if [ ${replaced_vscode_server_bin} -eq 0 ]; then
+      if [ ${replaced_vscode_server_bin} == 0 ]; then
         path_array[i]="${new_vscode_server_bin}"
         replaced_vscode_server_bin=1
       else
@@ -169,7 +169,7 @@ function ssh {
   # TODO: un-comment once agent forwarding is fixed
   # https://1password.community/discussion/comment/653379#Comment_653379
   # local SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
-  # if [[ $(uname) -eq "Darwin" ]] && [[ -S "${SOCK}" ]]; then
+  # if [[ $(uname) == "Darwin" ]] && [[ -S "${SOCK}" ]]; then
   #   command[1,0]=( env SSH_AUTH_SOCK=${SOCK}" )
   # fi
   if [[ "${TERM}" == "xterm-kitty" ]] && command -v kitty &> /dev/null; then
