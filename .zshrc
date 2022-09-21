@@ -50,23 +50,19 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     path=("$HOME/bin" "$path[@]")
 fi
 
-# set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then
     path=("$HOME/.local/bin" "$path[@]")
 fi
 
-if [[ -z "${SSH_CLIENT}" || "${TERM_PROGRAM}" == "vscode" ]]; then
-  export EDITOR="${HOME}/bin/editor.sh"
-else
-  export EDITOR="vim"
+if [ -d /usr/local/go/bin ] ; then
+    path=("/usr/local/go/bin" "$path[@]")
 fi
+
+export EDITOR="${HOME}/bin/editor.sh"
 
 alias ls='ls -FG' # G is color, F is trailing slashes, etc.
 alias sed='sed -r'
