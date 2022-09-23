@@ -1,28 +1,30 @@
 # restart yabai
-ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
+ctrl + alt + cmd - r: launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
 # focus window
-alt - h : yabai -m window --focus west || yabai -m display --focus west
-alt - j : yabai -m window --focus south || yabai -m display --focus south
-alt - k : yabai -m window --focus north || yabai -m display --focus north
-alt - l : yabai -m window --focus east || yabai -m display --focus east
+alt - h: yabai -m window --focus west || yabai -m display --focus west
+alt - j: yabai -m window --focus south || yabai -m display --focus south
+alt - k: yabai -m window --focus north || yabai -m display --focus north
+alt - l: yabai -m window --focus east || yabai -m display --focus east
 # swap windows
-shift + alt - h : yabai -m window --swap west || (yabai -m window --display west && yabai -m display --focus west)
-shift + alt - j : yabai -m window --swap south || (yabai -m window --display south && yabai -m display --focus south)
-shift + alt - k : yabai -m window --swap north || (yabai -m window --display north && yabai -m display --focus north)
-shift + alt - l : yabai -m window --swap east || (yabai -m window --display east && yabai -m display --focus east)
+shift + alt - h: yabai -m window --swap west || (yabai -m window --display west && yabai -m display --focus west)
+shift + alt - j: yabai -m window --swap south || (yabai -m window --display south && yabai -m display --focus south)
+shift + alt - k: yabai -m window --swap north || (yabai -m window --display north && yabai -m display --focus north)
+shift + alt - l: yabai -m window --swap east || (yabai -m window --display east && yabai -m display --focus east)
 # go to space on left / right (AKA virtual desktop)
-ctrl + cmd - left : ~/.config/yabai/manage_spaces.sh focus-left
-ctrl + cmd - right : ~/.config/yabai/manage_spaces.sh focus-right
+ctrl + cmd - left: ~/.config/yabai/manage_spaces.sh focus-left
+ctrl + cmd - right: ~/.config/yabai/manage_spaces.sh focus-right
 # go to space
-ctrl + cmd - 1 : ~/.config/yabai/manage_spaces.sh focus 1
-ctrl + cmd - 2 : ~/.config/yabai/manage_spaces.sh focus 2
-ctrl + cmd - 3 : ~/.config/yabai/manage_spaces.sh focus 3
-ctrl + cmd - 4 : ~/.config/yabai/manage_spaces.sh focus 4
+ctrl + cmd - 1: ~/.config/yabai/manage_spaces.sh focus 1
+ctrl + cmd - 2: ~/.config/yabai/manage_spaces.sh focus 2
+ctrl + cmd - 3: ~/.config/yabai/manage_spaces.sh focus 3
+ctrl + cmd - 4: ~/.config/yabai/manage_spaces.sh focus 4
 # send to space
-shift + ctrl + cmd - 1 : ~/.config/yabai/manage_spaces.sh send 1
-shift + ctrl + cmd - 2 : ~/.config/yabai/manage_spaces.sh send 2
-shift + ctrl + cmd - 3 : ~/.config/yabai/manage_spaces.sh send 3
-shift + ctrl + cmd - 4 : ~/.config/yabai/manage_spaces.sh send 4
+shift + ctrl + cmd - 1: ~/.config/yabai/manage_spaces.sh send 1
+shift + ctrl + cmd - 2: ~/.config/yabai/manage_spaces.sh send 2
+shift + ctrl + cmd - 3: ~/.config/yabai/manage_spaces.sh send 3
+shift + ctrl + cmd - 4: ~/.config/yabai/manage_spaces.sh send 4
 # rotate
-alt - r : yabai -m space --rotate 90
-alt - y : yabai -m space --mirror y-axis
+alt - r: yabai -m space --rotate 90
+alt - y: yabai -m space --mirror y-axis
+# toggle float
+alt - f: yabai -m window --toggle float
