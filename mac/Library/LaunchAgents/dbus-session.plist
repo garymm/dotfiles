@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>dbus-session</string>
+
+	<key>ProgramArguments</key>
+	<array>
+		<string>/bin/bash</string>
+		<string>-c</string>
+		<string>/opt/homebrew/Cellar/dbus/HEAD-b30c2c2/bin/dbus-daemon --nofork --session --address=unix:path=$DBUS_LAUNCHD_SESSION_BUS_SOCKET</string>
+	</array>
+    <key>StandardOutPath</key>
+    <string>/tmp/dbus-session.stdout.txt</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/dbus-session.stderr.txt</string>
+    <key>Debug</key>
+    <true/>
+	<key>Sockets</key>
+	<dict>
+		<key>unix_domain_listener</key>
+		<dict>
+			<key>SecureSocketWithKey</key>
+			<string>DBUS_LAUNCHD_SESSION_BUS_SOCKET</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

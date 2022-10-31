@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Script to start Signal command line interface:
+# https://github.com/isamert/scli
+# Note: I wasn't able to get dbus to run using homebrew.
+# I installed it using homebrew but then I had to create my own launchd
+# service.
+# Install it and start it using:
+# loggedInUserID=$( scutil <<< "show State:/Users/ConsoleUser" | awk '/kCGSSessionUserIDKey :/ { print $3 }' )
+# cp Library/LaunchAgents/dbus-session.plist $HOME/Library/LaunchAgents/dbus-session.plist
+# # uninstall first if needed:
+# launchctl bootout gui/${loggedInUserID}/dbus-session
+# launchctl bootstrap gui/${loggedInUserID} $HOME/Library/LaunchAgents/dbus-session.plist
+# launchctl kickstart -p gui/${loggedInUserID}/dbus-session
+# launchctl print gui/${loggedInUserID}/dbus-session
+
+# TODO: report a bug to homebrew about launchd.
+# I was going to but my `brew doctor` had a bunch of warnings that
+# I'm pretty sure were unrelated but I was too lazy to resolve.
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+PATH="/opt/homebrew/opt/openjdk/bin:${HOME}/bin/signal-cli-0.11.4/bin:$PATH"
+DBUS_LAUNCHD_SESSION_BUS_SOCKET=$(launchctl getenv DBUS_LAUNCHD_SESSION_BUS_SOCKET)
+
+# Seems to be needed for some reason
+signal-cli -u +18702009755 daemon &
+SIGNAL_CLI_PID=$!
+kill $SIGNAL_CLI_PID
+
+"${HOME}/src/misc/scli/scli" "$@"
