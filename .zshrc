@@ -8,19 +8,6 @@ ZSH_THEME="garymm"
 
 COMPLETION_WAITING_DOTS="true"
 
-# do this before the plugins are loaded so that they find
-# binaries in these directories.
-if [ -d "$HOME/bin" ] ; then
-    path=("$HOME/bin" "$path[@]")
-fi
-
-if [ -d "$HOME/.local/bin" ] ; then
-    path=("$HOME/.local/bin" "$path[@]")
-fi
-
-if [ -d /usr/local/go/bin ] ; then
-    path=("/usr/local/go/bin" "$path[@]")
-fi
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -42,6 +29,20 @@ export LANG=en_US.UTF-8
 
 # https://unix.stackexchange.com/a/62599/88047
 typeset -U path PATH
+
+# do this before the plugins are loaded so that they find
+# binaries in these directories.
+if [ -d "$HOME/bin" ] ; then
+    path=("$HOME/bin" "$path[@]")
+fi
+
+if [ -d "$HOME/.local/bin" ] ; then
+    path=("$HOME/.local/bin" "$path[@]")
+fi
+
+if [ -d /usr/local/go/bin ] ; then
+    path=("/usr/local/go/bin" "$path[@]")
+fi
 
 if [[ $(uname) == "Darwin" ]]; then
   if [[ $(uname -m) == "arm64" ]]; then

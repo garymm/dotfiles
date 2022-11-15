@@ -35,7 +35,6 @@ ${BREW} install \
 
 # Install casks
 ${BREW} install --cask \
-    anaconda \
     font-fira-code \
     kitty \
     stats \
@@ -55,12 +54,21 @@ cp -r bin ~/
 
 # Install dotfiles from this repo
 cp .zshrc ~/
+
+# mamba / conda.
+# Comes after .zshrc is installed so that it modifies it.
+curl --output /tmp/mambaforge.sh --location "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
+bash /tmp/mambaforge.sh -b -p ~/mambaforge
+ln -s ~/mambaforge/bin/mamba ~/bin/conda
+zsh -c '~/mambaforge/bin/mamba init zsh'
+
 cp -r .oh-my-zsh ~/
 git clone https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 
 cp .gitconfig ~/
 
 cp -r mac/.config ~/
+cp -r .config/* ~/.config/
 cp -r mac/Library ~/
 
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
