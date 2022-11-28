@@ -38,6 +38,7 @@ ${BREW} install \
 ${BREW} install --cask \
     font-fira-code \
     kitty \
+    raycast \
     stats \
     visual-studio-code
 
