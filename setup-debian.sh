@@ -30,6 +30,7 @@ done
 
 # sysstat contains sar for tmux-plugins/tmux-cpu
 apt-fast install -y \
+	autojump \
 	icdiff \
 	libsource-highlight-common \
 	ripgrep \

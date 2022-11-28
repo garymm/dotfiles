@@ -25,6 +25,7 @@ ${BREW} tap homebrew/cask-fonts
 
 # Install formulae
 ${BREW} install \
+    autojump \
     fzf \
     gnu-sed \
     icdiff \
