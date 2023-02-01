@@ -8,7 +8,6 @@ ZSH_THEME="garymm"
 
 COMPLETION_WAITING_DOTS="true"
 
-
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
@@ -20,8 +19,11 @@ plugins=(
   direnv
   fzf
   gitfast
+  ssh-agent
   zsh-interactive-cd
 )
+
+zstyle :omz:plugins:ssh-agent agent-forwarding yes
 
 # Seems required for kitty, but probably doesn't hurt otherwise.
 # https://apple.stackexchange.com/q/269324/34090
