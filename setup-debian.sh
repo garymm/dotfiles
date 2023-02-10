@@ -69,7 +69,6 @@ git clone https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/cu
 # Comes after .zshrc is installed so that it modifies it.
 curl --output /tmp/mambaforge.sh --location "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
 bash /tmp/mambaforge.sh -b -p ~/mambaforge
-ln -s ~/mambaforge/bin/mamba ~/bin/conda
 zsh -c '~/mambaforge/bin/mamba init zsh'
 
 cp -r .config ~/

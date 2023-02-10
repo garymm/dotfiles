@@ -47,6 +47,10 @@ if [ -d /usr/local/go/bin ] ; then
     path=("/usr/local/go/bin" "$path[@]")
 fi
 
+if [ -d "$HOME/mambaforge/bin" ] ; then
+    path=("$HOME/mambaforge/bin" "$path[@]")
+fi
+
 if [[ $(uname) == "Darwin" ]]; then
   if [[ $(uname -m) == "arm64" ]]; then
     BREW_PREFIX=/opt/homebrew
