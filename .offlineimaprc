@@ -1,0 +1,23 @@
+# Documentation: https://github.com/OfflineIMAP/offlineimap/blob/master/offlineimap.conf
+
+[general]
+accounts = garymm-org
+pythonfile = /home/garymm/bin/offlineimap.py
+
+[Account garymm-org]
+localrepository = Local
+remoterepository = Remote
+
+[Repository Local]
+type = Maildir
+localfolders = /bigpool/gbackup/gmail-garymm-org
+
+[Repository Remote]
+type = IMAP
+remotehost = imap.gmail.com
+remoteuser = garymm@garymm.org
+oauth2_client_id_eval = get_client_id("garymm@garymm.org")
+oauth2_client_secret_eval = get_client_secret("garymm@garymm.org")
+oauth2_request_url = https://accounts.google.com/o/oauth2/token
+oauth2_access_token_eval = get_access_token("garymm@garymm.org")
+sslcacertfile = OS-DEFAULT

@@ -96,5 +96,6 @@ if [[ -n "${email}" ]]; then
 	sudo ln -s /usr/local/etc/msmtprc /etc/msmtprc
 	touch /var/log/msmtp
 	chmod ugo+w /var/log/msmtp
+	sudo cp .offlineimaprc /root/
+	cp offlineimap.py ~/bin/
 fi
-

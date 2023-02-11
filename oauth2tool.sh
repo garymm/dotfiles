@@ -67,8 +67,6 @@ if [[ "${USERNAME}" == "root" ]]; then
 fi
 
 get_access_token() {
-    # $GNULE  should point to the directory that contains your local copy of  oauth2.py
-
     { IFS= read -r tokenline && IFS= read -r expireline; } < \
     <(python2 ${DIR}/oauth2.py --user=${handle} \
     --client_id=$(pass $handle/GmailAPI/CID) \
