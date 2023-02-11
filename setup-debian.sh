@@ -50,10 +50,11 @@ if [[ ! -d ~/.fzf ]]; then
 	~/.fzf/install --no-key-bindings --no-completion --no-update-rc
 fi
 
-if [[ ! -d ~/.tmux/plugins/tpm ]]; then
-	mkdir -p ~/.tmux/plugins
-	git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-fi
+rm -rf ~/.tmux/plugins
+mkdir -p ~/.tmux/plugins
+git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+cp .tmux.conf ~/
+~/.tmux/plugins/tpm/bin/install_plugins
 
 # Install oh-my-zsh
 if [[ ! -d ~/.oh-my-zsh ]]; then
@@ -63,18 +64,16 @@ fi
 # Install dotfiles from this repo
 cp .zshrc ~/
 cp -r .oh-my-zsh ~/
-git clone https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
+rm -rf ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
+git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 
 # mamba / conda.
 # Comes after .zshrc is installed so that it modifies it.
 curl --output /tmp/mambaforge.sh --location "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
-bash /tmp/mambaforge.sh -b -p ~/mambaforge
+bash /tmp/mambaforge.sh -u -b -p ~/mambaforge
 zsh -c '~/mambaforge/bin/mamba init zsh'
 
 cp -r .config ~/
-
-cp .tmux.conf ~/
-~/.tmux/plugins/tpm/bin/install_plugins
 
 cp -r bin ~/
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
