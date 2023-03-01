@@ -18,11 +18,19 @@ ctrl + cmd - 1: ~/.config/yabai/manage_spaces.sh focus 1
 ctrl + cmd - 2: ~/.config/yabai/manage_spaces.sh focus 2
 ctrl + cmd - 3: ~/.config/yabai/manage_spaces.sh focus 3
 ctrl + cmd - 4: ~/.config/yabai/manage_spaces.sh focus 4
+ctrl + cmd - 5: ~/.config/yabai/manage_spaces.sh focus 5
+ctrl + cmd - 6: ~/.config/yabai/manage_spaces.sh focus 6
+ctrl + cmd - 7: ~/.config/yabai/manage_spaces.sh focus 7
+ctrl + cmd - 8: ~/.config/yabai/manage_spaces.sh focus 8
 # send to space
 shift + ctrl + cmd - 1: ~/.config/yabai/manage_spaces.sh send 1
 shift + ctrl + cmd - 2: ~/.config/yabai/manage_spaces.sh send 2
 shift + ctrl + cmd - 3: ~/.config/yabai/manage_spaces.sh send 3
 shift + ctrl + cmd - 4: ~/.config/yabai/manage_spaces.sh send 4
+shift + ctrl + cmd - 5: ~/.config/yabai/manage_spaces.sh send 5
+shift + ctrl + cmd - 6: ~/.config/yabai/manage_spaces.sh send 6
+shift + ctrl + cmd - 7: ~/.config/yabai/manage_spaces.sh send 7
+shift + ctrl + cmd - 8: ~/.config/yabai/manage_spaces.sh send 8
 # rotate
 alt - r: yabai -m space --rotate 90
 alt - y: yabai -m space --mirror y-axis
