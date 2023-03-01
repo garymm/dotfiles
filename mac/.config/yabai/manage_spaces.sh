@@ -39,8 +39,7 @@ function display_for_space() {
 }
 
 function init() {
-    local -r n="${1}"
-    create_up_to_n_spaces "$((n * N_DISPLAYS))"
+    create_up_to_n_spaces "${1}"
     if [[ "${INITIAL_SPACE}" -ne $(cur_space) ]]; then
         yabai -m space --focus "${INITIAL_SPACE}"
     fi

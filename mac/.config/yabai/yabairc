@@ -32,5 +32,5 @@ yabai -m config mouse_modifier ctrl
 yabai -m config mouse_action1 resize
 yabai -m config mouse_action2 move
 
-# create 4 spaces on each display
-~/.config/yabai/manage_spaces.sh init 4
+# create 8 spaces
+~/.config/yabai/manage_spaces.sh init 8
