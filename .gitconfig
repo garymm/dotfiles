@@ -38,3 +38,5 @@
 	default = current
 [init]
 	defaultBranch = master
+[advice]
+    setUpstreamFailure = false
