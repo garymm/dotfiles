@@ -25,6 +25,9 @@ plugins=(
 
 zstyle :omz:plugins:ssh-agent agent-forwarding yes
 
+# https://github.com/junegunn/fzf/issues/164#issuecomment-581837757
+bindkey "ç" fzf-cd-widget
+
 # Seems required for kitty, but probably doesn't hurt otherwise.
 # https://apple.stackexchange.com/q/269324/34090
 export LC_ALL=en_US.UTF-8
@@ -52,9 +55,6 @@ if [ -d "$HOME/mambaforge/bin" ] ; then
 fi
 
 if [[ $(uname) == "Darwin" ]]; then
-  # https://github.com/junegunn/fzf/issues/164#issuecomment-581837757
-  bindkey "ç" fzf-cd-widget
-
   if [[ $(uname -m) == "arm64" ]]; then
     BREW_PREFIX=/opt/homebrew
   else
