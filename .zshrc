@@ -52,6 +52,9 @@ if [ -d "$HOME/mambaforge/bin" ] ; then
 fi
 
 if [[ $(uname) == "Darwin" ]]; then
+  # https://github.com/junegunn/fzf/issues/164#issuecomment-581837757
+  bindkey "ç" fzf-cd-widget
+
   if [[ $(uname -m) == "arm64" ]]; then
     BREW_PREFIX=/opt/homebrew
   else
