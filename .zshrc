@@ -110,7 +110,6 @@ fcod() {
 # Create a new branch tracking origin
 function gnb {
   git switch --create "$@" master
-  git branch --set-upstream-to "origin/$@"
 }
 
 function echoerr() {
