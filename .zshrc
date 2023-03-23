@@ -33,14 +33,11 @@ bindkey "ç" fzf-cd-widget
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+# Add to PATH. do this before the plugins are loaded so that they find
+# binaries in these directories.
+
 # https://unix.stackexchange.com/a/62599/88047
 typeset -U path PATH
-
-# do this before the plugins are loaded so that they find
-# binaries in these directories.
-if [ -d "$HOME/bin" ] ; then
-    path=("$HOME/bin" "$path[@]")
-fi
 
 if [ -d "$HOME/.local/bin" ] ; then
     path=("$HOME/.local/bin" "$path[@]")
@@ -71,6 +68,10 @@ else
   export FZF_BASE="${HOME}/.fzf"
   LESSPIPE="/usr/share/source-highlight/src-hilite-lesspipe.sh"
   plugins+=(tmux docker)
+fi
+
+if [ -d "$HOME/bin" ] ; then
+    path=("$HOME/bin" "$path[@]")
 fi
 
 source $ZSH/oh-my-zsh.sh
