@@ -40,3 +40,4 @@
 	defaultBranch = master
 [advice]
     setUpstreamFailure = false
+	skippedCherryPicks = false
