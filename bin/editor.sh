@@ -28,7 +28,9 @@ fi
 
 # Try to find VS Code remote session without being inside its terminal.
 if [[ -z "$(which code)" && $(uname) == "Linux" ]]; then
-    for f in $(ls /proc/*/environ); do
+    # -t to see newest file first. Connecting to older ones might fail.
+    for f in $(ls -t /proc/*/environ); do
+      # Skip unreadable files.
       if [[ -r $f && -n $(grep 'VSCODE_IPC_HOOK_CLI=' $f) ]]; then
         while IFS= read -r -d $'\0' assignment; do
             if [[ $assignment == VSCODE_IPC_HOOK_CLI=* ]]; then
