@@ -15,6 +15,7 @@
 	dt = difftool
 	rbc = rebase --continue
 	rbom = rebase origin/master
+	psh = push --force-with-lease
 [icdiff]
 	options = --line-numbers
 [diff]
