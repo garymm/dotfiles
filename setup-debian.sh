@@ -36,6 +36,7 @@ done
 # sysstat contains sar for tmux-plugins/tmux-cpu
 apt-fast install -y \
 	autojump \
+	fd-find \
 	icdiff \
 	libsource-highlight-common \
 	ripgrep \
@@ -43,6 +44,8 @@ apt-fast install -y \
 	sysstat \
 	tmux \
 	zsh
+
+ln -s $(which fdfind) ~/.local/bin/fd
 
 curl -sfL https://direnv.net/install.sh | bash
 
