@@ -49,7 +49,7 @@ ${BREW_PREFIX}/opt/fzf/install --no-key-bindings --no-completion --no-update-rc
 
 # Install oh-my-zsh
 if [[ ! -d ~/.oh-my-zsh ]]; then
-	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  env RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 cp -r bin ~/
