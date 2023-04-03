@@ -6,6 +6,11 @@ set -o xtrace
 
 sudo adduser "${USER}" sudo
 
+# Passwordless sudo
+echo "${USER} ALL=(ALL) ALL" >> /tmp/sudoers
+sudo chown root /tmp/sudoers
+sudo mv /tmp/sudoers /etc/sudoers.d/
+
 # Install apt-fast
 sudo add-apt-repository -y ppa:apt-fast/stable
 sudo apt-get update
@@ -80,11 +85,6 @@ curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/
 chmod +x ~/bin/git-pair
 
 cp .gitconfig ~/
-
-# Passwordless sudo
-# echo "${USER} ALL=(ALL) NOPASSWD: ALL" > "/tmp/${USER}"
-# sudo mv "/tmp/${USER}" /etc/sudoers.d/
-# sudo chown root /etc/sudoers.d/${USER}
 
 if [[ -n "${email}" ]]; then
 	# pass is for oath2tool.sh

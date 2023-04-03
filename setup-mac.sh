@@ -4,6 +4,7 @@ set -o errexit
 set -o pipefail
 set -o xtrace
 
+# Passwordless sudo
 echo "${USER} ALL=(ALL) ALL" >> /tmp/sudoers
 sudo chown root /tmp/sudoers
 sudo mv /tmp/sudoers /etc/sudoers.d/
@@ -75,7 +76,3 @@ cp -r mac/Library ~/
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
 chmod +x ~/bin/git-pair
 
-# Passwordless sudo
-# echo "${USER} ALL=(ALL) NOPASSWD: ALL" > "/tmp/${USER}"
-# sudo mv "/tmp/${USER}" /private/etc/sudoers.d/
-# sudo chown root /private/etc/sudoers.d/${USER}
