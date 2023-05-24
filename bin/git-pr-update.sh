@@ -70,16 +70,21 @@ for commit in "${commits[@]}"; do
   fi
 done
 
+if ! command -v gh >/dev/null; then
+  echo "GitHub not found. Try installing it from https://cli.github.com/"
+  exit 1
+fi
+if ! gh auth status >/dev/null; then
+  echo "Not logged in with gh CLI, logging in now."
+  gh auth login
+fi
+
 remotes=()
 for commit in "${commits[@]}"; do
   remotes+=("${commit}:refs/heads/$(pr_branch $commit)")
 done
 git push $SOURCE_REMOTE --force-with-lease "${remotes[@]}"
 
-if ! command -v gh >/dev/null; then
-  echo "GitHub not found. Try installing it from https://cli.github.com/"
-  exit 1
-fi
 
 i=0
 for commit in "${commits[@]}"; do
