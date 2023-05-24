@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-"""Opens a single GitHub PR per commit, similar to Gerrit."""
+# Opens a single GitHub PR per commit, similar to Gerrit.
 
 set -o pipefail
 set -o errexit
@@ -37,6 +37,14 @@ function pr_branch() {
   commit_body ${1} | grep -E "^${KEY}" | cut -c ${offset}-
 }
 
+function reverse_lines() {
+    if command -v tac >/dev/null 2>&1; then
+        tac "$@"
+    else
+        awk '{a[i++]=$0} END {for (j=i-1; j>=0;) print a[j--] }' "$@"
+    fi
+}
+
 
 to=${2:-HEAD}
 from=${1:-$(merge_base ${to})}
@@ -48,7 +56,7 @@ git merge-base --is-ancestor ${tail} ${head}
 
 repo=$(git rev-parse --show-toplevel)
 
-commits=($(git rev-list --ancestry-path ${tail}..${head} | tac))
+commits=($(git rev-list --ancestry-path ${tail}..${head} | reverse_lines))
 
 for commit in "${commits[@]}"; do
   if ! pr_branch ${commit} >/dev/null ; then
