@@ -11,9 +11,17 @@ echo "${USER} ALL=(ALL) ALL" >> /tmp/sudoers
 sudo chown root /tmp/sudoers
 sudo mv /tmp/sudoers /etc/sudoers.d/
 
-# Install apt-fast
+# Install apt-fast repo
 sudo add-apt-repository -y ppa:apt-fast/stable
 sudo apt-get update
+
+# Install gh repo, based on https://github.com/cli/cli/tree/trunk/docs
+type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+
+# install apt-fast
 sudo apt-get install -y apt-fast
 
 email=""
@@ -37,6 +45,7 @@ done
 apt-fast install -y \
 	autojump \
 	fd-find \
+	gh \
 	icdiff \
 	libsource-highlight-common \
 	ripgrep \

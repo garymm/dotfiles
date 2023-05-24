@@ -29,6 +29,7 @@ ${BREW} install \
     autojump \
     fd \
     fzf \
+    gh \
     gnu-sed \
     icdiff \
     jq \
