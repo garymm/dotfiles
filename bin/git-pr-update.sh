@@ -45,7 +45,6 @@ function reverse_lines() {
     fi
 }
 
-
 to=${2:-HEAD}
 from=${1:-$(merge_base ${to})}
 
