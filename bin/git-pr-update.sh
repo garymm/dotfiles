@@ -77,7 +77,7 @@ for commit in "${commits[@]}"; do
 done
 git push $SOURCE_REMOTE --force-with-lease "${remotes[@]}"
 
-if [[ ! command -v gh >/dev/null ]]; then
+if ! command -v gh >/dev/null; then
   echo "GitHub not found. Try installing it from https://cli.github.com/"
   exit 1
 fi
