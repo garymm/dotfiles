@@ -7,9 +7,7 @@ set -o xtrace
 sudo adduser "${USER}" sudo
 
 # Passwordless sudo
-echo "${USER} ALL=(ALL) ALL" >> /tmp/sudoers
-sudo chown root /tmp/sudoers
-sudo mv /tmp/sudoers /etc/sudoers.d/
+echo "${USER} ALL=(ALL) ALL" | sudo tee -a /etc/sudoers.d/sudoers
 
 # Install apt-fast repo
 sudo add-apt-repository -y ppa:apt-fast/stable
@@ -18,7 +16,7 @@ sudo apt-get update
 # Install gh repo, based on https://github.com/cli/cli/tree/trunk/docs
 type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 
 # install apt-fast
@@ -53,8 +51,6 @@ apt-fast install -y \
 	sysstat \
 	tmux \
 	zsh
-
-ln -s $(which fdfind) ~/.local/bin/fd
 
 curl -sfL https://direnv.net/install.sh | bash
 
@@ -93,6 +89,7 @@ zsh -c '~/mambaforge/bin/mamba init zsh'
 cp -r .config ~/
 
 cp -r bin ~/
+ln -s $(which fdfind) ~/bin/fd
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
 chmod +x ~/bin/git-pair
 
