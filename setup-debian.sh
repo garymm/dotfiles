@@ -52,8 +52,6 @@ apt-fast install -y \
 	tmux \
 	zsh
 
-curl -sfL https://direnv.net/install.sh | bash
-
 # This doesn't seem to work on GCP or Azure VM's.
 chsh -s $(which zsh)
 
@@ -89,6 +87,7 @@ zsh -c '~/mambaforge/bin/mamba init zsh'
 cp -r .config ~/
 
 cp -r bin ~/
+curl -sfL https://direnv.net/install.sh | bin_path=~/bin bash
 ln -s $(which fdfind) ~/bin/fd
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
 chmod +x ~/bin/git-pair
