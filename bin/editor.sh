@@ -30,8 +30,9 @@ fi
 if [[ -z "$(which code)" && $(uname) == "Linux" ]]; then
     # -t to see newest file first. Connecting to older ones might fail.
     for f in $(ls -t /proc/*/environ); do
-      # Skip unreadable files.
-      if [[ -r $f && -n $(grep 'VSCODE_IPC_HOOK_CLI=' $f) ]]; then
+      # - skip unreadable files
+      # - convert null bytes to new lines with tr
+      if [[ -r ${f} && -n $(tr '\0' '\n' < ${f} | grep 'VSCODE_IPC_HOOK_CLI=') ]]; then
         while IFS= read -r -d $'\0' assignment; do
             if [[ $assignment == VSCODE_IPC_HOOK_CLI=* ]]; then
                 prefix_len=$(expr length "VSCODE_IPC_HOOK_CLI=")
@@ -49,8 +50,11 @@ if [[ -z "$(which code)" && $(uname) == "Linux" ]]; then
     done
 fi
 
-if [[ -z "$(which code)" ]]; then
-    vim "$@"
-else
-    code --wait "$@"
-fi
+for CODE in code code-insiders; do
+    if [[ -n "$(which ${CODE})" ]]; then
+        "${CODE}" --wait "$@"
+        exit $?
+    fi
+done
+
+vim "$@"
