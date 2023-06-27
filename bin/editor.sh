@@ -15,15 +15,20 @@ if [[ -n "$TMUX" ]]; then
     fi
 fi
 
+# This script is usually in ~/bin. Check if ~/bin/code is there.
 if [[ -z "$(which code)" ]]; then
-    if [[ $(uname) == "Darwin" ]]; then
-        if [[ $(uname -m) == "arm64" ]]; then
-            BREW_PREFIX=/opt/homebrew
-        else
-            BREW_PREFIX=/usr/local
-        fi
-        export PATH="${BREW_PREFIX}/bin:$PATH"
+    SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+    export PATH="${SCRIPT_DIR}:${PATH}"
+fi
+
+# Look in homebrew dir.
+if [[ -z "$(which code)" && $(uname) == "Darwin" ]]; then
+    if [[ $(uname -m) == "arm64" ]]; then
+        BREW_PREFIX=/opt/homebrew
+    else
+        BREW_PREFIX=/usr/local
     fi
+    export PATH="${BREW_PREFIX}/bin:$PATH"
 fi
 
 # Try to find VS Code remote session without being inside its terminal.
