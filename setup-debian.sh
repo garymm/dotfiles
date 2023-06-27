@@ -92,6 +92,10 @@ ln -s $(which fdfind) ~/bin/fd
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
 chmod +x ~/bin/git-pair
 
+wget "https://github.com/bottlerocketlabs/remote-pbcopy/releases/download/v0.1.5/rpbcopy_0.1.5_Linux_$(dpkg --print-architecture).tar.gz" -O /tmp/rpbcopy.tar.gz
+tar -xvf /tmp/rpbcopy.tar.gz -C /tmp
+mv /tmp/rpbcopy ~/bin/pbcopy
+
 cp .gitconfig ~/
 
 if [[ -n "${email}" ]]; then
