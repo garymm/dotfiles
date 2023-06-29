@@ -96,6 +96,7 @@ for commit in "${commits[@]}"; do
 
   if [[ "$count" -eq 0 ]]; then
       gh pr create \
+          --draft \
           --base "$base" \
           --head "${TARGET_USER}:${pr}" \
           --title "$(commit_summary $commit)" \
