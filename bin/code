@@ -5,7 +5,7 @@ set -o pipefail
 
 # Remove this script's directory from PATH so we can find the real code binary using `which`.
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-export PATH=`echo $PATH | tr ":" "\n" | grep -v "${SCRIPT_DIR}" | tr "\n" ":"`
+export PATH=`echo $PATH | tr ":" "\n" | grep -v "${SCRIPT_DIR}" | xargs | tr " " ":"`
 
 # Move environment variables from tmux into shell
 if [[ -n "$TMUX" ]]; then
