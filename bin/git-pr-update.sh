@@ -29,11 +29,20 @@ function commit_summary() {
 }
 
 function commit_body() {
-  git show --no-patch --format=%b ${1}
+  git show --no-patch --format=%B ${1}
 }
 
 function pr_branch() {
   key_lines=$(commit_body ${1} | grep -E "^${KEY}")
+  if [[ -z "${key_lines}" ]]; then
+    echo "Sorry but commit ${commit} is missing \`$KEY\`" >&2
+    echo ""  >&2
+    echo "Try installing the Gerrit Git commit message hook and then amending your commits:"  >&2
+    echo "" >&2
+    echo " (cd ${repo} && f=`git rev-parse --git-dir`/hooks/commit-msg ; mkdir -p \$(dirname \$f) ; curl -Lo \$f https://gerrit-review.googlesource.com/tools/hooks/commit-msg ; chmod +x \$f)"  >&2
+    echo "" >&2
+    exit 1
+  fi
   if [[ $(wc -l <<< "${key_lines}") -ne 1 ]]; then
     echo "commit ${1} has multiple lines starting with ${KEY}. Reword the commit message to fix." >&2
     exit 1
@@ -64,13 +73,6 @@ commits=($(git rev-list --ancestry-path ${tail}..${head} | reverse_lines))
 
 for commit in "${commits[@]}"; do
   if ! pr_branch ${commit} >/dev/null ; then
-    echo "Sorry but commit ${commit} is missing \`$KEY\`" >&2
-    echo ""  >&2
-    echo "Try installing the Gerrit Git commit message hook and then amending your commits:"  >&2
-    echo "" >&2
-    echo " (cd ${repo} && f=`git rev-parse --git-dir`/hooks/commit-msg ; mkdir -p \$(dirname \$f) ; curl -Lo \$f https://gerrit-review.googlesource.com/tools/hooks/commit-msg ; chmod +x \$f)"  >&2
-    echo "" >&2
-
     exit 1
   fi
 done
