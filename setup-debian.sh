@@ -52,8 +52,10 @@ apt-fast install -y \
 	tmux \
 	zsh
 
-# This doesn't seem to work on GCP or Azure VM's.
-chsh -s $(which zsh)
+# For users that use non-regular login (e.g. LDAP), chsh won't work.
+if [[ -n $(grep ${USER} /etc/passwd) ]]; then
+	chsh -s $(which zsh)
+fi
 
 if [[ ! -d ~/.fzf ]]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
