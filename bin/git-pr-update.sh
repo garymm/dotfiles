@@ -8,7 +8,13 @@ set -o nounset
 
 KEY="Change-Id: "
 SOURCE_REMOTE=origin
-TARGET_USER=$(git remote get-url "$SOURCE_REMOTE" | sed 's/^.*:\(.*\)\/.*$/\1/')
+SOURCE_URL=$(git remote get-url "$SOURCE_REMOTE")
+if [[ "$SOURCE_URL" =~ ^git@ ]]; then
+    TARGET_USER=$(sed 's/^.*:\(.*\)\/.*$/\1/' <<< "$SOURCE_URL")
+else
+    # for https remotes
+    TARGET_USER=$(sed 's/.*\/\([^\/]*\)\/.*/\1/' <<< "$SOURCE_URL")
+fi
 
 TARGET_REMOTE="${TARGET_REMOTE:-origin}"
 if git rev-parse --verify main >/dev/null 2>&1; then
