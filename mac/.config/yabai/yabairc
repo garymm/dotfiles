@@ -1,24 +1,7 @@
-# The scripting-addition must be loaded manually if
-# you are running yabai on macOS Big Sur.
-# The following lines load it when this config is executed during startup.
-#
-# for this to work you must configure sudo such that
-# it will be able to run the command without password
-# From https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
-
-sudo yabai --load-sa
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-
 # Default to tiled
 yabai -m config layout bsp
 # Show shadows only for floating windows
 yabai -m config window_shadow float
-
-# requires disabling SIP
-yabai -m config window_border on
-yabai -m config window_border_width 6
-# transparent
-yabai -m config normal_window_border_color 0x00FFFFFF
 
 # float certain apps
 yabai -m rule --add app="^System Preferences$" manage=off
@@ -33,4 +16,7 @@ yabai -m config mouse_action1 resize
 yabai -m config mouse_action2 move
 
 # create 8 spaces
-~/.config/yabai/manage_spaces.sh init 8
+# TODO: Currently doing this manually on each boot because it requires SIP to be disabled.
+# Hopefully I can find a way to make this work with SIP enabled.
+# https://apple.stackexchange.com/questions/234606/create-a-new-space-using-a-keyboard-shortcut
+# ~/.config/yabai/manage_spaces.sh init 8

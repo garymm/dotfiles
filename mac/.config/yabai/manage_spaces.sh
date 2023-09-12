@@ -1,10 +1,32 @@
-#!/usr/bin/env bash
+#!/opt/homebrew/bin/bash
+
+# using bash from homebrew b/c MacOS built-in bash
+# is too old.
 
 set -o errexit
 set -o pipefail
 
 function cur_space() {
     echo $(yabai -m query --spaces --space | jq '.index')
+}
+
+# NOTE: requires keyboard shortcuts to be enabled in system settings
+# Keyboard -> Keyboard Shortcuts -> Mission Control
+# THen make sure ^1 is enabled for "switch to desktop 1", etc.
+function switchdesktop() {
+    declare -A desktophash
+    desktophash[0]=29
+    desktophash[1]=18
+    desktophash[2]=19
+    desktophash[3]=20
+    desktophash[4]=21
+    desktophash[5]=23
+    desktophash[6]=22
+    desktophash[7]=26
+    desktophash[8]=28
+    desktophash[9]=25
+    desktopkey="${desktophash[$1]}"
+    osascript -e "tell application \"System Events\" to key code $desktopkey using control down"
 }
 
 readonly N_DISPLAYS=$(yabai -m query --displays | jq length)
@@ -19,7 +41,7 @@ function create_up_to_n_spaces() {
             yabai -m space --create
         fi
     done
-    # Loop backwards to void the case where a display has
+    # Loop backwards to avoid the case where a display has
     # only 1 space on it and then we're unable to move it.
     for ((i=n; i >= 1; i--)); do
         local target_disp="$(display_for_space "${i}" "${n}")"
@@ -63,12 +85,16 @@ function focus_offset() {
 
 function focus() {
     local -r target_space_on_disp1="${1}"
+    # if target_space_on_disp1 is out of bounds, do nothing
+    if [[ "${target_space_on_disp1}" -lt 1 || "${target_space_on_disp1}" -gt $((N_SPACES / N_DISPLAYS)) ]]; then
+        return 0
+    fi
     for ((i=1; i <= N_DISPLAYS; i++)); do
         local target_space=$((target_space_on_disp1 + (i - 1) * N_SPACES / N_DISPLAYS))
-        yabai -m space --focus "${target_space}"
+        switchdesktop "${target_space}"
     done
     if [[ "${N_DISPLAYS}" -gt 1 ]]; then
-        yabai -m display --focus "${INITIAL_DISPLAY}"
+        switchdesktop "${INITIAL_DISPLAY}"
     fi
 }
 

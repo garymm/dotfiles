@@ -27,6 +27,7 @@ ${BREW} tap homebrew/cask-fonts
 # Install formulae
 ${BREW} install \
     autojump \
+    bash \
     fd \
     fzf \
     gh \
