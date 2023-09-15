@@ -40,13 +40,27 @@ ${BREW} install \
 
 # Install casks
 ${BREW} install --cask \
+    homebrew/cask-versions/dash6 \
     font-fira-code \
     kitty \
     raycast \
     stats \
     visual-studio-code
 
-"${BREW_PREFIX}/bin/code" --install-extension kshetline.ligatures-limited
+extensions=(
+  "deerawan.vscode-dash"
+  "eamodio.gitlens"
+  "GitHub.copilot-chat"
+  "GitHub.copilot"
+  "GitHub.vscode-pull-request-github"
+  "ms-vscode-remote.remote-ssh-edit"
+  "ms-vscode-remote.remote-ssh"
+  "ms-vscode.remote-explorer"
+)
+
+for extension in "${extensions[@]}"; do
+  "${BREW_PREFIX}/bin/code" --install-extension "${extension}"
+done
 
 # oh-my-zsh plugin takes care of all of the `--no` things.
 ${BREW_PREFIX}/opt/fzf/install --no-key-bindings --no-completion --no-update-rc
