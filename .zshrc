@@ -109,7 +109,13 @@ fcod() {
 
 # Create a new branch tracking origin
 function gnb {
-  git switch --create "$@" master
+  local BASE_BRANCH
+  if git rev-parse --verify main >/dev/null 2>&1; then
+      BASE_BRANCH="main"
+  else
+      BASE_BRANCH="master"
+  fi
+  git switch --create "$@" "${BASE_BRANCH}"
 }
 
 function echoerr() {
