@@ -122,58 +122,6 @@ function echoerr() {
   echo "$@" 1>&2
 }
 
-# VSCode remote workflow sets PATH when connecting to the server.
-# But existing shells in tmux windows don't get the updated PATH, unless we
-# run this to move environment variables from tmux into the shell.
-
-function update_path {
-  IFS=':' read -r -A input_array <<< "${1}"
-  local new_vscode_server_bin=""
-  for element in "${input_array[@]}"; do
-    if [[ "${element}" == *.vscode-server/bin* ]]; then
-      new_vscode_server_bin="${element}"
-    fi
-  done
-  if [[ -z "${new_vscode_server_bin}" ]]; then
-    echoerr "input did not contain vscode-server/bin"
-    return 1
-  fi
-
-  local replaced_vscode_server_bin=0
-
-  IFS=':' read -r -A path_array <<< "${PATH}"
-  for (( i = 1; i <= ${#path_array}; i++ )) do
-    if [[ "${path_array[i]}" == *.vscode-server/bin* ]]; then
-      if [ ${replaced_vscode_server_bin} == 0 ]; then
-        path_array[i]="${new_vscode_server_bin}"
-        replaced_vscode_server_bin=1
-      else
-        path_array[i]=()
-      fi
-    fi
-  done
-
-  local with_leading_colon=$(printf ":%s" "${path_array[@]}")
-  # strip leading colon
-  echo "${with_leading_colon:1}"
-}
-
-if [ -n "$TMUX" ]; then
-  function refresh_env {
-    IFS=$'\n' VARS=($(tmux show-environment | grep -v '^-'))
-    for VAR in $VARS; do
-      local path_prefix_len=$(expr match "$VAR" '^PATH=')
-      if [ ${path_prefix_len} -gt 0 ]; then
-        export PATH=$(update_path "${VAR:${path_prefix_len}}")
-      else
-        export $VAR
-      fi
-    done
-  }
-  # Ensures PATH can find vscode
-  alias code='refresh_env && \code'
-fi
-
 mkdir -p /tmp/ssh-master
 
 # https://sw.kovidgoyal.net/kitty/kittens/ssh/
@@ -181,12 +129,6 @@ SSH_BIN=$(which -a ssh | grep '^/' | head -1)
 
 function ssh {
   declare -a command=( "$@" )
-  # TODO: un-comment once agent forwarding is fixed
-  # https://1password.community/discussion/comment/653379#Comment_653379
-  # local SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
-  # if [[ $(uname) == "Darwin" ]] && [[ -S "${SOCK}" ]]; then
-  #   command[1,0]=( env SSH_AUTH_SOCK=${SOCK}" )
-  # fi
   if [[ "${TERM}" == "xterm-kitty" ]] && command -v kitty &> /dev/null; then
     command[1,0]=( kitty +kitten ssh )
   else
@@ -202,3 +144,20 @@ if [[ "${TERM}" == "xterm-kitty" ]]; then
 fi
 
 export HOMEBREW_NO_ENV_HINTS=1  # Disable annoying homebrew hints
+
+if [[ -n "${SSH_AUTH_SOCK}" ]]; then
+  tmux setenv -g SSH_AUTH_SOCK "${SSH_AUTH_SOCK}"
+fi
+
+if [ -n "$TMUX" ]; then
+  function refresh_env {
+    IFS=$'\n' VARS=($(tmux show-environment | grep -v '^-'))
+    for VAR in $VARS; do
+      export $VAR
+    done
+  }
+  # Ensures SSH_AUTH_SOCK is set appropriately
+  for cmd in ssh scp git; do
+    alias $cmd="refresh_env && \\$cmd"
+  done
+fi
