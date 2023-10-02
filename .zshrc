@@ -129,7 +129,8 @@ SSH_BIN=$(which -a ssh | grep '^/' | head -1)
 
 function ssh {
   declare -a command=( "$@" )
-  if [[ "${TERM}" == "xterm-kitty" ]] && command -v kitty &> /dev/null; then
+
+  if [[ "${TERM}" == "xterm-kitty" ]] && command -v kitty &> /dev/null && [[ -z "${SSH_CONNECTION}" ]] ; then
     command[1,0]=( kitty +kitten ssh )
   else
     command[1,0]=( "${SSH_BIN}" )
@@ -149,7 +150,7 @@ if [[ -n "${SSH_AUTH_SOCK}" ]]; then
   tmux setenv -g SSH_AUTH_SOCK "${SSH_AUTH_SOCK}"
 fi
 
-if [ -n "$TMUX" ]; then
+if [ -n "${TMUX}" ]; then
   function refresh_env {
     IFS=$'\n' VARS=($(tmux show-environment | grep -v '^-'))
     for VAR in $VARS; do
