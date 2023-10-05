@@ -146,7 +146,7 @@ fi
 
 export HOMEBREW_NO_ENV_HINTS=1  # Disable annoying homebrew hints
 
-if [[ -n "${SSH_AUTH_SOCK}" ]]; then
+if [[ -n "${SSH_AUTH_SOCK}" ]] && command -v tmux &> /dev/null; then
   tmux setenv -g SSH_AUTH_SOCK "${SSH_AUTH_SOCK}"
 fi
 
