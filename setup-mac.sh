@@ -29,6 +29,7 @@ ${BREW} install \
     autojump \
     bash \
     fd \
+    font-monaspace \
     fzf \
     gh \
     gnu-sed \

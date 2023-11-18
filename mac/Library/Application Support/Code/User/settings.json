@@ -1,5 +1,5 @@
 {
-    "editor.fontFamily": "Fira Code",
+    "editor.fontFamily": "'Monaspace Argon', monospace",
     "editor.fontLigatures": true,
     "editor.formatOnSave": true,
     "editor.hover.sticky": true,
