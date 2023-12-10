@@ -19,8 +19,13 @@ sudo apt-get update
 apt-fast install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 # sudo-less / non-root docker
-sudo groupadd docker
-sudo usermod -aG docker "${USER}"
-newgrp docker
+if ! getent group docker >/dev/null; then
+    sudo groupadd docker
+fi
+
+if ! id -nG "$USER" | grep -qw docker; then
+    sudo usermod -aG docker "${USER}"
+    newgrp docker
+fi
 
 docker run hello-world
