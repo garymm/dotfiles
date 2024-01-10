@@ -146,8 +146,20 @@ fi
 
 export HOMEBREW_NO_ENV_HINTS=1  # Disable annoying homebrew hints
 
-if [[ -n "${SSH_AUTH_SOCK}" ]] && command -v tmux &> /dev/null; then
-  tmux setenv -g SSH_AUTH_SOCK "${SSH_AUTH_SOCK}"
+if [[ "$(uname)" == "Linux" && "${VSCODE_INJECTION}" == "1" && -n "${SSH_CONNECTION}" ]]; then
+  # work-aruond for VSCode SSH_AUTH_SOCK issue. For some reason it works fine in Bash but
+  # not ZSH.
+  # Maybe related to this? https://github.com/microsoft/vscode/issues/168202
+  while IFS= read -r -d $'\0' assignment; do
+      if [[ $assignment == SSH_AUTH_SOCK=* ]]; then
+          prefix_len=$(expr length "SSH_AUTH_SOCK=")
+          export SSH_AUTH_SOCK="${assignment:${prefix_len}}"
+      fi
+  done < "/proc/${PPID}/environ"
+fi
+
+if [[ -n "${SSH_AUTH_SOCK}" ]] && tmux list-sessions &> /dev/null; then
+  tmux set-environment -g SSH_AUTH_SOCK "${SSH_AUTH_SOCK}"
 fi
 
 if [ -n "${TMUX}" ]; then
@@ -161,16 +173,4 @@ if [ -n "${TMUX}" ]; then
   for cmd in ssh scp git; do
     alias $cmd="refresh_env && \\$cmd"
   done
-fi
-
-if [[ "$(uname)" == "Linux" && "${VSCODE_INJECTION}" == "1" && -n "${SSH_CONNECTION}" ]]; then
-  # work-aruond for VSCode SSH_AUTH_SOCK issue. For some reason it works fine in Bash but
-  # not ZSH.
-  # Maybe related to this? https://github.com/microsoft/vscode/issues/168202
-  while IFS= read -r -d $'\0' assignment; do
-      if [[ $assignment == SSH_AUTH_SOCK=* ]]; then
-          prefix_len=$(expr length "SSH_AUTH_SOCK=")
-          export SSH_AUTH_SOCK="${assignment:${prefix_len}}"
-      fi
-  done < "/proc/${PPID}/environ"
 fi
