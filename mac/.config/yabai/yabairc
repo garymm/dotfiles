@@ -1,3 +1,6 @@
+# enable scripting addition
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
 # Default to tiled
 yabai -m config layout bsp
 # Show shadows only for floating windows
@@ -16,7 +19,10 @@ yabai -m config mouse_action1 resize
 yabai -m config mouse_action2 move
 
 # create 8 spaces
-# TODO: Currently doing this manually on each boot because it requires SIP to be disabled.
-# Hopefully I can find a way to make this work with SIP enabled.
-# https://apple.stackexchange.com/questions/234606/create-a-new-space-using-a-keyboard-shortcut
-# ~/.config/yabai/manage_spaces.sh init 8
+~/.config/yabai/manage_spaces.sh init 8
+
+# Reduce opacity of inactive windows to make focus more obvious.
+# requires disabling SIP.
+yabai -m config window_opacity on
+yabai -m config active_window_opacity 1.0
+yabai -m config normal_window_opacity 0.9

@@ -10,25 +10,6 @@ function cur_space() {
     echo $(yabai -m query --spaces --space | jq '.index')
 }
 
-# NOTE: requires keyboard shortcuts to be enabled in system settings
-# Keyboard -> Keyboard Shortcuts -> Mission Control
-# THen make sure ^1 is enabled for "switch to desktop 1", etc.
-function switchdesktop() {
-    declare -A desktophash
-    desktophash[0]=29
-    desktophash[1]=18
-    desktophash[2]=19
-    desktophash[3]=20
-    desktophash[4]=21
-    desktophash[5]=23
-    desktophash[6]=22
-    desktophash[7]=26
-    desktophash[8]=28
-    desktophash[9]=25
-    desktopkey="${desktophash[$1]}"
-    osascript -e "tell application \"System Events\" to key code $desktopkey using control down"
-}
-
 readonly N_DISPLAYS=$(yabai -m query --displays | jq length)
 readonly INITIAL_DISPLAY=$(yabai -m query --displays --display | jq '.index')
 readonly N_SPACES=$(yabai -m query --spaces | jq 'map(select(."is-native-fullscreen" == false)) | length')
@@ -83,6 +64,13 @@ function focus_offset() {
     focus "${target_space_on_disp1}"
 }
 
+function focus_space() {
+    if [[ "true" == $(yabai -m query --spaces --space "${1}" | jq '.["has-focus"]') ]]; then
+        return 0
+    fi
+    yabai -m space --focus "${1}"
+}
+
 function focus() {
     local -r target_space_on_disp1="${1}"
     # if target_space_on_disp1 is out of bounds, do nothing
@@ -91,10 +79,10 @@ function focus() {
     fi
     for ((i=1; i <= N_DISPLAYS; i++)); do
         local target_space=$((target_space_on_disp1 + (i - 1) * N_SPACES / N_DISPLAYS))
-        switchdesktop "${target_space}"
+        focus_space "${target_space}"
     done
     if [[ "${N_DISPLAYS}" -gt 1 ]]; then
-        switchdesktop "${INITIAL_DISPLAY}"
+        yabai -m display --focus "${INITIAL_DISPLAY}"
     fi
 }
 
