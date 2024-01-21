@@ -36,3 +36,5 @@ alt - r: yabai -m space --rotate 90
 alt - y: yabai -m space --mirror y-axis
 # toggle float
 alt - f: yabai -m window --toggle float
+
+ctrl - escape: ~/.config/yabai/drop_down_terminal.sh

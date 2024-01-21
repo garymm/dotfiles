@@ -1,6 +1,7 @@
 # enable scripting addition
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 sudo yabai --load-sa
+
 # Default to tiled
 yabai -m config layout bsp
 # Show shadows only for floating windows
@@ -20,6 +21,11 @@ yabai -m config mouse_action2 move
 
 # create 8 spaces
 ~/.config/yabai/manage_spaces.sh init 8
+
+# https://github.com/koekeishiya/yabai/issues/657#issuecomment-1860658813
+# dropdown terminal (aka "Quake mode")
+# see additional config in ~/.config/skhd/skhdrc
+yabai -m rule --add title="ddterm" manage=off grid="10:1:0:0:1:4"
 
 # Reduce opacity of inactive windows to make focus more obvious.
 # requires disabling SIP.
