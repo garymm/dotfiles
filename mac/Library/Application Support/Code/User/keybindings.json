@@ -1,6 +1,9 @@
 [
     // Begin swap save and save-all
-    { "key": "cmd+k s", "command": "workbench.action.files.save" },
+    {
+        "key": "cmd+k s",
+        "command": "workbench.action.files.save"
+    },
     {
         "key": "cmd+s",
         "command": "workbench.action.files.saveAll"
@@ -70,5 +73,9 @@
         "key": "shift+cmd+up",
         "command": "-cursorTopSelect",
         "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+shift+i",
+        "command": "workbench.panel.chatSidebar"
     }
 ]
