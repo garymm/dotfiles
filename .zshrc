@@ -19,9 +19,13 @@ plugins=(
   direnv
   fzf
   gitfast
-  ssh-agent
   zsh-interactive-cd
 )
+
+# ssh-agent plugin interferes with VSCode's remote SSH stuff.
+if ! [[ "$(uname)" == "Linux" && "${VSCODE_INJECTION}" == "1" && -n "${SSH_CONNECTION}" ]]; then
+  plugins+=(ssh-agent)
+fi
 
 zstyle :omz:plugins:ssh-agent agent-forwarding yes
 
@@ -145,32 +149,6 @@ if [[ "${TERM}" == "xterm-kitty" ]]; then
 fi
 
 export HOMEBREW_NO_ENV_HINTS=1  # Disable annoying homebrew hints
-
-if [[ "$(uname)" == "Linux" && "${VSCODE_INJECTION}" == "1" && -n "${SSH_CONNECTION}" ]]; then
-  # work-aruond for VSCode SSH_AUTH_SOCK issue. For some reason it works fine in Bash but
-  # not ZSH.
-  # Maybe related to this? https://github.com/microsoft/vscode/issues/168202
-  shell_child_pid=""
-  for sshd_pid in $(pgrep sshd); do
-      shell_child=$(pgrep -P "${sshd_pid}" '(bash|zsh)')
-      if [[ -n "${shell_child}" ]]; then
-          shell_child_pid="${shell_child}"
-          break
-      fi
-  done
-  if [[ -n "${shell_child_pid}" ]]; then
-      while IFS= read -r -d $'\0' assignment; do
-        if [[ $assignment == SSH_AUTH_SOCK=* ]]; then
-            prefix_len=$(expr length "SSH_AUTH_SOCK=")
-            export SSH_AUTH_SOCK="${assignment:${prefix_len}}"
-        fi
-    done < "/proc/${shell_child_pid}/environ"
-  fi
-fi
-
-if [[ -n "${SSH_AUTH_SOCK}" ]] && tmux list-sessions &> /dev/null; then
-  tmux set-environment -g SSH_AUTH_SOCK "${SSH_AUTH_SOCK}"
-fi
 
 if [ -n "${TMUX}" ]; then
   function refresh_env {
