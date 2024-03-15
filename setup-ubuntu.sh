@@ -84,13 +84,12 @@ cp -r .oh-my-zsh ~/
 rm -rf ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 
-# mamba / conda.
+# micromamba
 # Comes after .zshrc is installed so that it modifies it.
-curl --output /tmp/mambaforge.sh --location "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
-bash /tmp/mambaforge.sh -u -b -p ~/mambaforge
-zsh -c '~/mambaforge/bin/mamba init zsh'
+"${SHELL}" <(curl -L micro.mamba.pm/install.sh)
+zsh -c '~/.local/bin/micromamba init zsh'
 
-cp -r .config ~/
+cp -r .config/* ~/.config/
 
 cp -r bin ~/
 curl -sfL https://direnv.net/install.sh | bin_path=~/bin bash

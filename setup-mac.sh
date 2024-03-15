@@ -28,6 +28,7 @@ ${BREW} tap homebrew/cask-fonts
 ${BREW} install \
     autojump \
     bash \
+    direnv \
     fd \
     font-monaspace \
     fzf \
@@ -76,11 +77,10 @@ cp -r bin ~/
 # Install dotfiles from this repo
 cp .zshrc ~/
 
-# mamba / conda.
+# micromamba
 # Comes after .zshrc is installed so that it modifies it.
-curl --output /tmp/mambaforge.sh --location "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
-bash /tmp/mambaforge.sh -b -p ~/mambaforge
-zsh -c '~/mambaforge/bin/mamba init zsh'
+"${SHELL}" <(curl -L micro.mamba.pm/install.sh)
+zsh -c '~/.local/bin/micromamba init zsh'
 
 cp -r .oh-my-zsh ~/
 git clone https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
