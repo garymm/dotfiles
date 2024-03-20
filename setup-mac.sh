@@ -96,10 +96,10 @@ cp .zshrc ~/
 zsh -c '~/.local/bin/micromamba init zsh'
 
 cp -r .oh-my-zsh ~/
-git clone https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
+rm -rf ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
+git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 
 cp .gitconfig ~/
-
 cp -r mac/.config ~/
 cp -r .config/* ~/.config/
 cp -r mac/Library ~/
