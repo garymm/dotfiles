@@ -92,6 +92,8 @@ zsh -c '~/.local/bin/micromamba init zsh'
 cp -r .config/* ~/.config/
 
 cp -r bin ~/
+rm -f ~/bin/cursor
+ln -s ~/bin/cursor code
 curl -sfL https://direnv.net/install.sh | bin_path=~/bin bash
 ln -s $(which fdfind) ~/bin/fd
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair

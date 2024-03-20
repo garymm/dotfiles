@@ -42,6 +42,7 @@ ${BREW} install \
 
 # Install casks
 ${BREW} install --cask \
+    cursor \
     homebrew/cask-versions/dash6 \
     font-fira-code \
     kitty \
@@ -49,18 +50,28 @@ ${BREW} install --cask \
     stats \
     visual-studio-code
 
-extensions=(
+cursor_extensions=(
   "deerawan.vscode-dash"
   "eamodio.gitlens"
-  "GitHub.copilot-chat"
-  "GitHub.copilot"
   "GitHub.vscode-pull-request-github"
+  "kahole.magit"
   "ms-vscode-remote.remote-ssh-edit"
   "ms-vscode-remote.remote-ssh"
   "ms-vscode.remote-explorer"
 )
 
-for extension in "${extensions[@]}"; do
+for extension in "${cursor_extensions[@]}"; do
+  "${BREW_PREFIX}/bin/cursor" --install-extension "${extension}"
+done
+
+
+code_extensions=(
+  "${cursor_extensions[@]}"
+  "GitHub.copilot-chat"
+  "GitHub.copilot"
+)
+
+for extension in "${code_extensions[@]}"; do
   "${BREW_PREFIX}/bin/code" --install-extension "${extension}"
 done
 
@@ -73,6 +84,8 @@ if [[ ! -d ~/.oh-my-zsh ]]; then
 fi
 
 cp -r bin ~/
+rm -f ~/bin/cursor
+ln -s code ~/bin/cursor
 
 # Install dotfiles from this repo
 cp .zshrc ~/

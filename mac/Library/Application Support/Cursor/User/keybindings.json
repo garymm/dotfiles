@@ -1,7 +1,7 @@
 [
     // Begin swap save and save-all
     {
-        "key": "cmd+k s",
+        "key": "cmd+r s",
         "command": "workbench.action.files.save"
     },
     {
@@ -31,9 +31,4 @@
         "command": "-editor.unfold",
         "when": "editorTextFocus && foldingEnabled"
     },
-    // End working around fold issue
-    {
-        "key": "cmd+l",
-        "command": "workbench.panel.chatSidebar"
-    }
 ]

@@ -3,6 +3,7 @@
 set -o errexit
 set -o pipefail
 
+EXE_NAME=$(basename "${BASH_SOURCE[0]}")
 # Remove this script's directory from PATH so we can find the real code binary using `which`.
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 export PATH=`echo $PATH | tr ":" "\n" | grep -v "${SCRIPT_DIR}" | xargs | tr " " ":"`
@@ -19,18 +20,15 @@ if [[ -n "$TMUX" ]]; then
     fi
 fi
 
-# Look in homebrew dir.
-if [[ -z "$(which code)" && $(uname) == "Darwin" ]]; then
-    if [[ $(uname -m) == "arm64" ]]; then
-        BREW_PREFIX=/opt/homebrew
-    else
-        BREW_PREFIX=/usr/local
+for dir in "/usr/local" "/usr" "/opt/homebrew"; do
+    if [[ -x "${dir}/bin/${EXE_NAME}" ]]; then
+        export PATH="${dir}/bin:$PATH"
+        break
     fi
-    export PATH="${BREW_PREFIX}/bin:$PATH"
-fi
+done
 
 # Try to find VS Code remote session without being inside its terminal.
-if [[ -z "$(which code)" && $(uname) == "Linux" ]]; then
+if [[ -z "$(which ${EXE_NAME})" && $(uname) == "Linux" ]]; then
     # -t to see newest file first. Connecting to older ones might fail.
     for f in $(ls -t /proc/*/environ); do
       if [[ ! -r "${f}" ]]; then  # check we can read the file
@@ -60,4 +58,4 @@ if [[ -z "$(which code)" && $(uname) == "Linux" ]]; then
     done
 fi
 
-code "$@"
+${EXE_NAME} "$@"

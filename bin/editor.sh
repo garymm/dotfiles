@@ -8,7 +8,7 @@ if [[ -z "$(which code)" ]]; then
     export PATH="${SCRIPT_DIR}:${PATH}"
 fi
 
-for CODE in code code-insiders; do
+for CODE in cursor code code-insiders; do
     if [[ -n "$(which ${CODE})" ]]; then
         "${CODE}" --wait "$@"
         exit $?
