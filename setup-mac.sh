@@ -5,9 +5,7 @@ set -o pipefail
 set -o xtrace
 
 # Passwordless sudo
-echo "${USER} ALL=(ALL) ALL" >> /tmp/sudoers
-sudo chown root /tmp/sudoers
-sudo mv /tmp/sudoers /etc/sudoers.d/
+echo "${USER} ALL=(ALL) NOPASSWD: ALL" | sudo tee "/private/etc/sudoers.d/${USER}"
 
 if [[ $(uname -m) == "arm64" ]]; then
   BREW_PREFIX=/opt/homebrew
