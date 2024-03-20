@@ -91,7 +91,6 @@ cp .zshrc ~/
 # micromamba
 # Comes after .zshrc is installed so that it modifies it.
 "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
-zsh -c '~/.local/bin/micromamba init zsh'
 
 cp -r .oh-my-zsh ~/
 rm -rf ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd

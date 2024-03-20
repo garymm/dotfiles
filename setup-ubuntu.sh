@@ -87,7 +87,6 @@ git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh
 # micromamba
 # Comes after .zshrc is installed so that it modifies it.
 "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
-zsh -c '~/.local/bin/micromamba init zsh'
 
 cp -r .config/* ~/.config/
 
