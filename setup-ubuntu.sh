@@ -54,6 +54,7 @@ apt-fast install -y \
 	source-highlight \
 	sysstat \
 	tmux \
+	zoxide \
 	zsh
 
 # For users that use non-regular login (e.g. LDAP), chsh won't work.

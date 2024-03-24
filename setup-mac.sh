@@ -36,7 +36,8 @@ ${BREW} install \
     jq \
     koekeishiya/formulae/skhd \
     koekeishiya/formulae/yabai \
-	  source-highlight
+	  source-highlight \
+    zoxide
 
 # Install casks
 ${BREW} install --cask \
