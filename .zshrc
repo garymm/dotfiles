@@ -16,6 +16,7 @@ plugins=(
   bazel
   colored-man-pages
   direnv
+  docker
   fzf
   gitfast
   zoxide
@@ -71,7 +72,7 @@ else
   # On Linux I install from source, see setup-debian.sh
   export FZF_BASE="${HOME}/.fzf"
   LESSPIPE="/usr/share/source-highlight/src-hilite-lesspipe.sh"
-  plugins+=(tmux docker)
+  plugins+=(tmux)
 fi
 
 if [ -d "$HOME/bin" ] ; then
