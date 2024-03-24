@@ -4,23 +4,8 @@ set -o errexit
 set -o pipefail
 set -o xtrace
 
-sudo adduser "${USER}" sudo
 
-# Passwordless sudo
-echo "${USER} ALL=(ALL) ALL" | sudo tee -a /etc/sudoers.d/sudoers
-
-# Install apt-fast repo
-sudo add-apt-repository -y ppa:apt-fast/stable
-sudo apt-get update
-
-# Install gh repo, based on https://github.com/cli/cli/tree/trunk/docs
-type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-
-# install apt-fast
-sudo apt-get install -y apt-fast
+cd -- "$( dirname -- "${BASH_SOURCE[0]}" )"
 
 email=""
 docker=""
@@ -43,6 +28,23 @@ while [ "$1" != "" ]; do
     shift
 done
 
+can_sudo=""
+
+if sudo -l &>/dev/null; then
+    can_sudo="1"
+fi
+
+USER=$(whoami)
+
+if [ -n "${can_sudo}" ]; then
+	sudo adduser "${USER}" sudo
+    echo "${USER} ALL=(ALL) ALL" | sudo tee -a /etc/sudoers.d/sudoers
+	# Install apt-fast repo
+	sudo add-apt-repository -y ppa:apt-fast/stable
+	sudo apt-get update
+fi
+
+
 # sysstat contains sar for tmux-plugins/tmux-cpu
 apt-fast install -y \
 	autojump \
@@ -58,14 +60,12 @@ apt-fast install -y \
 	zsh
 
 # For users that use non-regular login (e.g. LDAP), chsh won't work.
-if [[ -n $(grep ${USER} /etc/passwd) ]]; then
-	chsh -s $(which zsh)
-fi
-
-if [[ ! -d ~/.fzf ]]; then
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	# oh-my-zsh plugin takes care of all of the `--no` things.
-	~/.fzf/install --no-key-bindings --no-completion --no-update-rc
+if [[ -n $(grep "^${USER}:" /etc/passwd) ]]; then
+	current_shell=$(getent passwd "${USER}" | cut -d: -f7)
+	desired_shell="$(which zsh)"
+	if [ "${current_shell}" != "${desired_shell}" ]; then
+		chsh -s "${desired_shell}"
+	fi
 fi
 
 rm -rf ~/.tmux/plugins
@@ -85,25 +85,23 @@ cp -r .oh-my-zsh ~/
 rm -rf ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 
-# mamba
-# Comes after .zshrc is installed so that it modifies it.
-curl --output /tmp/mambaforge.sh --location "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
-bash /tmp/mambaforge.sh -u -b -p ~/mambaforge
-zsh -c '~/mambaforge/bin/mamba init zsh'
 
+mkdir -p ~/.config/
 cp -r .config/* ~/.config/
 
 rm -f ~/bin/cursor ~/bin/code
 cp -r bin ~/
 ln -s code ~/bin/cursor
 curl -sfL https://direnv.net/install.sh | bin_path=~/bin bash
-ln -s $(which fdfind) ~/bin/fd
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
 chmod +x ~/bin/git-pair
 
-wget "https://github.com/bottlerocketlabs/remote-pbcopy/releases/download/v0.1.5/rpbcopy_0.1.5_Linux_$(dpkg --print-architecture).tar.gz" -O /tmp/rpbcopy.tar.gz
-tar -xvf /tmp/rpbcopy.tar.gz -C /tmp
-mv /tmp/rpbcopy ~/bin/pbcopy
+# TODO: Remove if https://github.com/bottlerocketlabs/remote-pbcopy/pull/5
+if [[ $(uname -m) == "x86_64" ]]; then
+	curl --output /tmp/rpbcopy.tar.gz --location "https://github.com/bottlerocketlabs/remote-pbcopy/releases/download/v0.1.5/rpbcopy_0.1.5_Linux_$(dpkg --print-architecture).tar.gz"
+	tar -xvf /tmp/rpbcopy.tar.gz -C /tmp
+	mv /tmp/rpbcopy ~/bin/pbcopy
+fi
 
 cp .gitconfig ~/
 
