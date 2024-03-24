@@ -93,9 +93,9 @@ zsh -c '~/mambaforge/bin/mamba init zsh'
 
 cp -r .config/* ~/.config/
 
+rm -f ~/bin/cursor ~/bin/code
 cp -r bin ~/
-rm -f ~/bin/cursor
-ln -s ~/bin/cursor code
+ln -s code ~/bin/cursor
 curl -sfL https://direnv.net/install.sh | bin_path=~/bin bash
 ln -s $(which fdfind) ~/bin/fd
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair

@@ -82,8 +82,8 @@ if [[ ! -d ~/.oh-my-zsh ]]; then
   env RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
+rm -f ~/bin/cursor ~/bin/code
 cp -r bin ~/
-rm -f ~/bin/cursor
 ln -s code ~/bin/cursor
 
 # Install dotfiles from this repo
