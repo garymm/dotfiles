@@ -24,8 +24,11 @@ plugins=(
 )
 
 # ssh-agent plugin interferes with VSCode's remote SSH stuff.
+# ssh-agent plugin interferes with VSCode's remote SSH stuff.
 if ! [[ "$(uname)" == "Linux" && "${VSCODE_INJECTION}" == "1" && -n "${SSH_CONNECTION}" ]]; then
-  plugins+=(ssh-agent)
+  if [ -d "${HOME}/.ssh" ]; then
+    plugins+=(ssh-agent)
+  fi
 fi
 
 zstyle :omz:plugins:ssh-agent agent-forwarding yes
