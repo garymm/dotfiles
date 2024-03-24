@@ -89,11 +89,8 @@ ln -s code ~/bin/cursor
 # Install dotfiles from this repo
 cp .zshrc ~/
 
-# mamba
-# Comes after .zshrc is installed so that it modifies it.
-curl --output /tmp/mambaforge.sh --location "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
-bash /tmp/mambaforge.sh -u -b -p ~/mambaforge
-zsh -c '~/mambaforge/bin/mamba init zsh'
+# Install pixi
+curl -fsSL https://pixi.sh/install.sh | bash
 
 cp -r .oh-my-zsh ~/
 rm -rf ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd

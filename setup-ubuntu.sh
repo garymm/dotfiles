@@ -44,20 +44,27 @@ if [ -n "${can_sudo}" ]; then
 	sudo apt-get update
 fi
 
+# Install pixi
+curl -fsSL https://pixi.sh/install.sh | bash
+
+PATH="${HOME}/.pixi/bin:${PATH}"
 
 # sysstat contains sar for tmux-plugins/tmux-cpu
-apt-fast install -y \
-	autojump \
+pixi global install \
 	fd-find \
+	fzf \
 	gh \
-	icdiff \
-	libsource-highlight-common \
+	git \
 	ripgrep \
-	source-highlight \
-	sysstat \
 	tmux \
 	zoxide \
 	zsh
+
+if [[ $(uname -m) == "x86_64" ]]; then
+	pixi global install \
+		source-highlight \
+		sysstat
+fi
 
 # For users that use non-regular login (e.g. LDAP), chsh won't work.
 if [[ -n $(grep "^${USER}:" /etc/passwd) ]]; then

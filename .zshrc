@@ -59,6 +59,13 @@ if [ -d "$HOME/mambaforge/bin" ] ; then
     path=("$HOME/mambaforge/bin" "$path[@]")
 fi
 
+if [ -d "${HOME}/.pixi" ]; then
+  path=("${HOME}/.pixi/bin" "$path[@]")
+  autoload -Uz compinit
+  compinit
+  eval "$(pixi completion --shell zsh)"
+fi
+
 if [[ $(uname) == "Darwin" ]]; then
   if [[ $(uname -m) == "arm64" ]]; then
     BREW_PREFIX=/opt/homebrew
@@ -72,14 +79,18 @@ if [[ $(uname) == "Darwin" ]]; then
   # Use brew binaries by default
   path=("${BREW_PREFIX}/bin" "$path[@]")
 else
-  # On Linux I install from source, see setup-debian.sh
-  export FZF_BASE="${HOME}/.fzf"
+  export FZF_BASE="${HOME}/.pixi/envs/fzf/share/fzf"
   LESSPIPE="/usr/share/source-highlight/src-hilite-lesspipe.sh"
   plugins+=(tmux)
 fi
 
 if [ -d "$HOME/bin" ] ; then
     path=("$HOME/bin" "$path[@]")
+fi
+
+# Zsh from mambaforge doesn't set ZSH_VERSION for some reason
+if [ -z "${ZSH_VERSION}" ]; then
+  ZSH_VERSION="5.9"
 fi
 
 source $ZSH/oh-my-zsh.sh
@@ -166,3 +177,4 @@ if [ -n "${TMUX}" ]; then
     alias $cmd="refresh_env && \\$cmd"
   done
 fi
+
