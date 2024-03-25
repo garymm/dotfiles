@@ -16,6 +16,8 @@
 	rbc = rebase --continue
 	rbom = rebase origin/master
 	psh = push --force-with-lease
+	dlog = "!f() { : git log ; GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
+	difft = difftool --tool=difftastic
 [icdiff]
 	options = --line-numbers
 [diff]
@@ -24,6 +26,8 @@
 	prompt = false
 [difftool "vscode"]
 	cmd = ~/bin/editor.sh --diff $LOCAL $REMOTE
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
 [merge]
 	tool = vscode
 [mergetool "vscode"]

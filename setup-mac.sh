@@ -26,6 +26,7 @@ ${BREW} tap homebrew/cask-fonts
 ${BREW} install \
     autojump \
     bash \
+    difftastic \
     direnv \
     fd \
     font-monaspace \

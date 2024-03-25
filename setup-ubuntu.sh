@@ -64,6 +64,8 @@ if [[ $(uname -m) == "x86_64" ]]; then
 	pixi global install \
 		source-highlight \
 		sysstat
+	# TODO: hopefully this gets added to conda-forge at some point
+	pixi global install --channel=dnachun difftastic
 fi
 
 # For users that use non-regular login (e.g. LDAP), chsh won't work.
