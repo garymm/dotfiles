@@ -30,5 +30,5 @@
         "key": "alt+cmd+]",
         "command": "-editor.unfold",
         "when": "editorTextFocus && foldingEnabled"
-    },
+    }
 ]
