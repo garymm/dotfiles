@@ -4,8 +4,7 @@ set -o errexit
 set -o pipefail
 set -o xtrace
 
-
-cd -- "$( dirname -- "${BASH_SOURCE[0]}" )"
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 
 email=""
 docker=""
@@ -15,30 +14,34 @@ function usage {
 }
 
 while [ "$1" != "" ]; do
-    case $1 in
-        --email )   shift
-					email="1"
-					;;
-		--docker )  shift
-					docker="1"
-					;;
-		* )         usage
-					exit 1
-    esac
-    shift
+	case $1 in
+	--email)
+		shift
+		email="1"
+		;;
+	--docker)
+		shift
+		docker="1"
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+	shift
 done
 
 can_sudo=""
 
 if sudo -l &>/dev/null; then
-    can_sudo="1"
+	can_sudo="1"
 fi
 
 USER=$(whoami)
 
 if [ -n "${can_sudo}" ]; then
 	sudo adduser "${USER}" sudo
-    echo "${USER} ALL=(ALL) ALL" | sudo tee -a /etc/sudoers.d/sudoers
+	echo "${USER} ALL=(ALL) ALL" | sudo tee -a /etc/sudoers.d/sudoers
 	# Install apt-fast repo
 	sudo add-apt-repository -y ppa:apt-fast/stable
 	sudo apt-get update
@@ -92,8 +95,13 @@ fi
 cp .zshrc ~/
 cp -r .oh-my-zsh ~/
 rm -rf ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
-git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
+git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 
+# mamba
+# must come after copy .zshrc
+curl --output /tmp/miniforge3.sh -L "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash /tmp/miniforge3.sh -u -b -p ~/miniforge3
+zsh -c '~/miniforge3/bin/mamba init zsh'
 
 mkdir -p ~/.config/
 cp -r .config/* ~/.config/

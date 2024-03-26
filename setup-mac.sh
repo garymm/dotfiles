@@ -24,31 +24,31 @@ ${BREW} tap homebrew/cask-fonts
 
 # Install formulae
 ${BREW} install \
-    autojump \
-    bash \
-    difftastic \
-    direnv \
-    fd \
-    font-monaspace \
-    fzf \
-    gh \
-    gnu-sed \
-    icdiff \
-    jq \
-    koekeishiya/formulae/skhd \
-    koekeishiya/formulae/yabai \
-	  source-highlight \
-    zoxide
+  autojump \
+  bash \
+  difftastic \
+  direnv \
+  fd \
+  font-monaspace \
+  fzf \
+  gh \
+  gnu-sed \
+  icdiff \
+  jq \
+  koekeishiya/formulae/skhd \
+  koekeishiya/formulae/yabai \
+  source-highlight \
+  zoxide
 
 # Install casks
 ${BREW} install --cask \
-    cursor \
-    homebrew/cask-versions/dash6 \
-    font-fira-code \
-    kitty \
-    raycast \
-    stats \
-    visual-studio-code
+  cursor \
+  homebrew/cask-versions/dash6 \
+  font-fira-code \
+  kitty \
+  raycast \
+  stats \
+  visual-studio-code
 
 cursor_extensions=(
   "deerawan.vscode-dash"
@@ -63,7 +63,6 @@ cursor_extensions=(
 for extension in "${cursor_extensions[@]}"; do
   "${BREW_PREFIX}/bin/cursor" --install-extension "${extension}"
 done
-
 
 code_extensions=(
   "${cursor_extensions[@]}"
@@ -93,9 +92,15 @@ cp .zshrc ~/
 # Install pixi
 curl -fsSL https://pixi.sh/install.sh | bash
 
+# mamba
+# must come after copy .zshrc
+curl --output /tmp/miniforge3.sh -L "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash /tmp/miniforge3.sh -u -b -p ~/miniforge3
+zsh -c '~/miniforge3/bin/mamba init zsh'
+
 cp -r .oh-my-zsh ~/
 rm -rf ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
-git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git  ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
+git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 
 cp .gitconfig ~/
 cp -r mac/.config ~/
