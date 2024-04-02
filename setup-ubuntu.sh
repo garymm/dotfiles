@@ -60,24 +60,34 @@ pixi global install \
 	git \
 	ripgrep \
 	tmux \
-	zoxide \
-	zsh
+	zoxide
+
+set +o errexit
+set +o pipefail
+if ! command -v zsh &> /dev/null; then
+    pixi global install zsh
+fi
+set -o errexit
+set -o pipefail
+
 
 if [[ $(uname -m) == "x86_64" ]]; then
 	pixi global install \
 		source-highlight \
 		sysstat
-	# TODO: hopefully this gets added to conda-forge at some point
-	pixi global install --channel=dnachun difftastic
 fi
 
+
+desired_shell="$(which zsh)"
 # For users that use non-regular login (e.g. LDAP), chsh won't work.
 if [[ -n $(grep "^${USER}:" /etc/passwd) ]]; then
 	current_shell=$(getent passwd "${USER}" | cut -d: -f7)
-	desired_shell="$(which zsh)"
 	if [ "${current_shell}" != "${desired_shell}" ]; then
 		chsh -s "${desired_shell}"
 	fi
+else
+	echo "export SHELL=${desired_shell}" > "${HOME}/.bash_profile"
+	echo "exec ${desired_shell} -l" >> "${HOME}/.bash_profile"
 fi
 
 rm -rf ~/.tmux/plugins
@@ -88,7 +98,7 @@ cp .tmux.conf ~/
 
 # Install oh-my-zsh
 if [[ ! -d ~/.oh-my-zsh ]]; then
-	env RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	env ZSH= RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 # Install dotfiles from this repo
@@ -119,6 +129,12 @@ if [[ $(uname -m) == "x86_64" ]]; then
 	tar -xvf /tmp/rpbcopy.tar.gz -C /tmp
 	mv /tmp/rpbcopy ~/bin/pbcopy
 fi
+
+readonly DIFFT_ARCHIVE=/tmp/difftastic.tar.gz
+curl --output "${DIFFT_ARCHIVE}" -L https://github.com/Wilfred/difftastic/releases/download/0.57.0/difft-$(uname -m)-unknown-linux-gnu.tar.gz
+tar xfz "${DIFFT_ARCHIVE}"
+chmod +x ./difft
+mv ./difft ~/bin/
 
 cp .gitconfig ~/
 
