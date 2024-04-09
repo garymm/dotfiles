@@ -46,3 +46,5 @@
 [advice]
     setUpstreamFailure = false
 	skippedCherryPicks = false
+[rebase]
+	autosquash = true
