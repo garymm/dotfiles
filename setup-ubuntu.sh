@@ -94,7 +94,8 @@ rm -rf ~/.tmux/plugins
 mkdir -p ~/.tmux/plugins
 git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 cp .tmux.conf ~/
-~/.tmux/plugins/tpm/bin/install_plugins
+# Not sure why but tmux from pixi doesn't like xterm-kitty
+TERM=xterm ~/.tmux/plugins/tpm/bin/install_plugins
 
 # Install oh-my-zsh
 if [[ ! -d ~/.oh-my-zsh ]]; then
