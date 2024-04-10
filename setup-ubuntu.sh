@@ -59,14 +59,24 @@ pixi global install \
 	gh \
 	git \
 	ripgrep \
-	tmux \
 	zoxide
+
+function install_prefer_apt {
+	if ! command -v "${1}" &> /dev/null; then
+		if [ -n "${can_sudo}" ]; then
+			sudo apt-fast install -y "${1}"
+		else
+			pixi global install "${1}"
+		fi
+	fi
+}
 
 set +o errexit
 set +o pipefail
-if ! command -v zsh &> /dev/null; then
-    pixi global install zsh
-fi
+# the conda-forge versions of these don't behave quite right
+# so only install them with pixi if we have to.
+install_prefer_apt tmux
+install_prefer_apt zsh
 set -o errexit
 set -o pipefail
 
