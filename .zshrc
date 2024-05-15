@@ -19,6 +19,7 @@ plugins=(
   docker
   fzf
   gitfast
+  kubectl
   zoxide
   zsh-interactive-cd
 )
