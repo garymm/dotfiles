@@ -59,10 +59,11 @@ pixi global install \
 	gh \
 	git \
 	ripgrep \
+	starship \
 	zoxide
 
 function install_prefer_apt {
-	if ! command -v "${1}" &> /dev/null; then
+	if ! command -v "${1}" &>/dev/null; then
 		if [ -n "${can_sudo}" ]; then
 			sudo apt-fast install -y "${1}"
 		else
@@ -80,13 +81,11 @@ install_prefer_apt zsh
 set -o errexit
 set -o pipefail
 
-
 if [[ $(uname -m) == "x86_64" ]]; then
 	pixi global install \
 		source-highlight \
 		sysstat
 fi
-
 
 desired_shell="$(which zsh)"
 # For users that use non-regular login (e.g. LDAP), chsh won't work.
@@ -96,8 +95,8 @@ if [[ -n $(grep "^${USER}:" /etc/passwd) ]]; then
 		chsh -s "${desired_shell}"
 	fi
 else
-	echo "export SHELL=${desired_shell}" > "${HOME}/.bash_profile"
-	echo "exec ${desired_shell} -l" >> "${HOME}/.bash_profile"
+	echo "export SHELL=${desired_shell}" >"${HOME}/.bash_profile"
+	echo "exec ${desired_shell} -l" >>"${HOME}/.bash_profile"
 fi
 
 rm -rf ~/.tmux/plugins

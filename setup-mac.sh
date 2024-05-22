@@ -38,6 +38,7 @@ ${BREW} install \
   koekeishiya/formulae/skhd \
   koekeishiya/formulae/yabai \
   source-highlight \
+  starship \
   zoxide
 
 # Install casks
