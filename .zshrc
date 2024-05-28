@@ -52,8 +52,8 @@ if [ -d /usr/local/go/bin ] ; then
     path=("/usr/local/go/bin" "$path[@]")
 fi
 
-if [ -d "$HOME/mambaforge/bin" ] ; then
-    path=("$HOME/mambaforge/bin" "$path[@]")
+if [ -d "$HOME/miniforge3/bin" ] ; then
+    path=("$HOME/miniforge3/bin" "$path[@]")
 fi
 
 if [ -d "${HOME}/.pixi" ]; then
