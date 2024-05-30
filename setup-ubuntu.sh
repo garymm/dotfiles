@@ -113,7 +113,6 @@ fi
 
 # Install dotfiles from this repo
 cp .zshrc ~/
-cp -r .oh-my-zsh ~/
 rm -rf ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
 
