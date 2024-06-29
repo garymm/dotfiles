@@ -1,5 +1,7 @@
 # restart yabai
 ctrl + alt + cmd - r: launchctl kickstart -k "gui/${UID}/com.koekeishiya.yabai"
+# distribute spaces to displays
+ctrl + alt + cmd - l: ~/.config/yabai/manage_spaces.sh init 10
 # focus window
 alt - h: yabai -m window --focus west || yabai -m display --focus west
 alt - j: yabai -m window --focus south || yabai -m display --focus south
