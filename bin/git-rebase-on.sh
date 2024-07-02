@@ -7,7 +7,8 @@
 set -o errexit
 set -o pipefail
 
-if [[ -n $(git status --porcelain) ]]; then
+# allow untracked
+if [[ -n $(git status --porcelain | grep -v '^\?') ]]; then
     echo "git status is not clean. Please commit or stash your changes."
     exit 1
 fi
