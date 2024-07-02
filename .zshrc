@@ -28,6 +28,10 @@ if ! [[ "$(uname)" == "Linux" && "${VSCODE_INJECTION}" == "1" && -n "${SSH_CONNE
   fi
 fi
 
+if command -v rustup &> /dev/null; then
+  plugins+=(rust)
+fi
+
 zstyle :omz:plugins:ssh-agent agent-forwarding yes
 
 # https://github.com/junegunn/fzf/issues/164#issuecomment-581837757
