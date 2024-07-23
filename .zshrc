@@ -179,3 +179,4 @@ if [ -n "${TMUX}" ]; then
   done
 fi
 
+export VIRTUAL_ENV_DISABLE_PROMPT=1 # Don't show virtualenv in prompt. Starship instead.
