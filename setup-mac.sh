@@ -28,6 +28,7 @@ ${BREW} install \
   bash \
   difftastic \
   direnv \
+  eza \
   fd \
   font-monaspace \
   fzf \

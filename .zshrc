@@ -89,6 +89,15 @@ if [ -d "$HOME/bin" ] ; then
     path=("$HOME/bin" "$path[@]")
 fi
 
+if command -v eza &> /dev/null; then
+  plugins+=(eza)
+  alias eza="eza --classify"
+  # from oh-my-zsh/eza
+  alias recent="lT"
+else
+  alias recent="ls -rt"
+fi
+
 # Zsh from mambaforge doesn't set ZSH_VERSION for some reason
 if [ -z "${ZSH_VERSION}" ]; then
   ZSH_VERSION="5.9"

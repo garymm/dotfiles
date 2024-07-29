@@ -52,7 +52,6 @@ curl -fsSL https://pixi.sh/install.sh | bash
 
 PATH="${HOME}/.pixi/bin:${PATH}"
 
-# sysstat contains sar for tmux-plugins/tmux-cpu
 pixi global install \
 	fd-find \
 	fzf \
@@ -82,7 +81,9 @@ set -o errexit
 set -o pipefail
 
 if [[ $(uname -m) == "x86_64" ]]; then
+	# sysstat contains sar for tmux-plugins/tmux-cpu
 	pixi global install \
+		eza \
 		source-highlight \
 		sysstat
 fi
