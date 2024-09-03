@@ -15,6 +15,7 @@
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
     "go.toolsManagement.autoUpdate": true,
+    "search.quickOpen.includeHistory": false,
     "security.workspace.trust.untrustedFiles": "open",
     "workbench.editor.revealIfOpen": true,
     "workbench.editor.untitled.hint": "hidden"
