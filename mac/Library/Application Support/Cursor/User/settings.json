@@ -1,4 +1,7 @@
 {
+    "cursor.cpp.disabledLanguages": [
+        "magit"
+    ],
     "editor.fontFamily": "'Monaspace Argon', monospace",
     "editor.fontLigatures": true,
     "editor.formatOnSave": true,
@@ -14,6 +17,7 @@
     "git.autofetch": true,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
+    "magit.code-path": "cursor",
     "go.toolsManagement.autoUpdate": true,
     "search.quickOpen.includeHistory": false,
     "security.workspace.trust.untrustedFiles": "open",
