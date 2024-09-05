@@ -1,4 +1,5 @@
 {
+    "editor.accessibilitySupport": "off",
     "editor.fontFamily": "'Monaspace Argon', monospace",
     "editor.fontLigatures": true,
     "editor.formatOnSave": true,
@@ -14,6 +15,7 @@
     "git.autofetch": true,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
+    "githubPullRequests.pushBranch": "always",
     "github.copilot.enable": {
         "*": true,
         "yaml": false,
