@@ -23,6 +23,7 @@
     "githubPullRequests.pushBranch": "always",
     "magit.code-path": "cursor",
     "go.toolsManagement.autoUpdate": true,
+    "remote.SSH.useExecServer": false,
     "search.quickOpen.includeHistory": false,
     "security.workspace.trust.untrustedFiles": "open",
     "workbench.editor.revealIfOpen": true,
