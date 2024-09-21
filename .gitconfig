@@ -18,6 +18,7 @@
 	psh = push --force-with-lease
 	dlog = "!f() { : git log ; GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
 	difft = difftool --tool=difftastic
+	diffstash = difftool stash^!
 [icdiff]
 	options = --line-numbers
 [diff]
