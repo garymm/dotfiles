@@ -98,3 +98,6 @@ chmod +x ~/bin/git-pair
 
 # https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)#configure-scripting-addition
 echo "$(whoami) ALL=(root) NOPASSWD: sha256:$(shasum -a 256 "${BREW_PREFIX}/bin/yabai" | cut -d " " -f 1) "${BREW_PREFIX}/bin/yabai" --load-sa" | sudo tee /private/etc/sudoers.d/yabai
+
+skhd --start-service
+open https://github.com/koekeishiya/yabai/wiki/
