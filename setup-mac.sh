@@ -20,8 +20,6 @@ if [[ ! -e "${BREW}" ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-${BREW} tap homebrew/cask-fonts
-
 # Install formulae
 ${BREW} install \
   autojump \
@@ -45,36 +43,26 @@ ${BREW} install \
 # Install casks
 ${BREW} install --cask \
   cursor \
-  homebrew/cask-versions/dash6 \
+  dash \
   font-fira-code \
   kitty \
   raycast \
-  stats \
-  visual-studio-code
+  stats
 
-cursor_extensions=(
-  "deerawan.vscode-dash"
-  "eamodio.gitlens"
-  "GitHub.vscode-pull-request-github"
-  "kahole.magit"
-  "ms-vscode-remote.remote-ssh-edit"
-  "ms-vscode-remote.remote-ssh"
-  "ms-vscode.remote-explorer"
-)
+# https://github.com/getcursor/cursor/issues/1985
+# cursor_extensions=(
+#   "deerawan.vscode-dash"
+#   "eamodio.gitlens"
+#   "GitHub.vscode-pull-request-github"
+#   "kahole.magit"
+#   "ms-vscode-remote.remote-ssh-edit"
+#   "ms-vscode-remote.remote-ssh"
+#   "ms-vscode.remote-explorer"
+# )
 
-for extension in "${cursor_extensions[@]}"; do
-  "${BREW_PREFIX}/bin/cursor" --install-extension "${extension}"
-done
-
-code_extensions=(
-  "${cursor_extensions[@]}"
-  "GitHub.copilot-chat"
-  "GitHub.copilot"
-)
-
-for extension in "${code_extensions[@]}"; do
-  "${BREW_PREFIX}/bin/code" --install-extension "${extension}"
-done
+# for extension in "${cursor_extensions[@]}"; do
+#   "${BREW_PREFIX}/bin/cursor" --install-extension "${extension}"
+# done
 
 # oh-my-zsh plugin takes care of all of the `--no` things.
 ${BREW_PREFIX}/opt/fzf/install --no-key-bindings --no-completion --no-update-rc
@@ -94,15 +82,11 @@ cp .zshrc ~/
 # Install pixi
 curl -fsSL https://pixi.sh/install.sh | bash
 
-# mamba
-# must come after copy .zshrc
-curl --output /tmp/miniforge3.sh -L "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
-bash /tmp/miniforge3.sh -u -b -p ~/miniforge3
-zsh -c '~/miniforge3/bin/mamba init zsh'
 
-cp -r .oh-my-zsh ~/
-rm -rf ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
-git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git ~/.oh-my-zsh/custom/plugins/zsh-interactive-cd
+ZSH_INTERACTIVE_CD_PATH="${HOME}/.oh-my-zsh/custom/plugins/zsh-interactive-cd"
+rm -rf "${ZSH_INTERACTIVE_CD_PATH}"
+mkdir -p "$(dirname "${ZSH_INTERACTIVE_CD_PATH}")"
+git clone --depth 1 https://github.com/changyuheng/zsh-interactive-cd.git "${ZSH_INTERACTIVE_CD_PATH}"
 
 cp .gitconfig ~/
 cp -r mac/.config ~/
@@ -113,4 +97,4 @@ curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/
 chmod +x ~/bin/git-pair
 
 # https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)#configure-scripting-addition
-echo "$(whoami) ALL=(root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai) | cut -d " " -f 1) $(which yabai) --load-sa" | sudo tee /private/etc/sudoers.d/yabai
+echo "$(whoami) ALL=(root) NOPASSWD: sha256:$(shasum -a 256 "${BREW_PREFIX}/bin/yabai" | cut -d " " -f 1) "${BREW_PREFIX}/bin/yabai" --load-sa" | sudo tee /private/etc/sudoers.d/yabai
