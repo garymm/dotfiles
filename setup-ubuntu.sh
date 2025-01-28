@@ -126,6 +126,11 @@ zsh -c '~/miniforge3/bin/mamba init zsh'
 mkdir -p ~/.config/
 cp -r .config/* ~/.config/
 
+if [[ ! -f ~/.ssh/config ]]; then
+  mkdir -p ~/.ssh
+  cp .ssh/config ~/.ssh/config
+fi
+
 rm -f ~/bin/cursor ~/bin/code
 cp -r bin ~/
 ln -s code ~/bin/cursor

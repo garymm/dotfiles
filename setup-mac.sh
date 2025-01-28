@@ -93,6 +93,11 @@ cp -r mac/.config ~/
 cp -r .config/* ~/.config/
 cp -r mac/Library ~/
 
+if [[ ! -f ~/.ssh/config ]]; then
+  mkdir -p ~/.ssh
+  cp mac/.ssh/config ~/.ssh/config
+fi
+
 curl --output ~/bin/git-pair --location https://raw.githubusercontent.com/cac04/git-pair/master/git-pair
 chmod +x ~/bin/git-pair
 
