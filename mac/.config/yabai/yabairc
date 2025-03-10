@@ -15,7 +15,7 @@ yabai -m rule --add app="^Timer$" manage=off
 yabai -m signal --add event=window_created app="^1Password$" title="^$" action=~/.config/yabai/focus_1password.sh
 
 # use the mouse
-yabai -m config mouse_modifier ctrl
+yabai -m config mouse_modifier alt
 yabai -m config mouse_action1 resize
 yabai -m config mouse_action2 move
 
