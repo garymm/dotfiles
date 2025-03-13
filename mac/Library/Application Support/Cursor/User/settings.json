@@ -5,7 +5,7 @@
     ],
     "cursor.chat.showSuggestedFiles": true,
     "editor.accessibilitySupport": "off",
-    "editor.fontFamily": "'Monaspace Argon', monospace",
+    "editor.fontFamily": "'Monaspace Neon', monospace",
     "editor.fontLigatures": true,
     "editor.formatOnSave": true,
     "editor.hover.sticky": true,
