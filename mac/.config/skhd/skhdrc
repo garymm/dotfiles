@@ -16,23 +16,23 @@ shift + alt - i: yabai -m window --swap east || (yabai -m window --display east 
 ctrl + cmd - left: ~/.config/yabai/manage_spaces.sh focus-left
 ctrl + cmd - right: ~/.config/yabai/manage_spaces.sh focus-right
 # go to space
-cmd - 1: ~/.config/yabai/manage_spaces.sh focus 1
-cmd - 2: ~/.config/yabai/manage_spaces.sh focus 2
-cmd - 3: ~/.config/yabai/manage_spaces.sh focus 3
-cmd - 4: ~/.config/yabai/manage_spaces.sh focus 4
-cmd - 5: ~/.config/yabai/manage_spaces.sh focus 5
-cmd - 6: ~/.config/yabai/manage_spaces.sh focus 6
-cmd - 7: ~/.config/yabai/manage_spaces.sh focus 7
-cmd - 8: ~/.config/yabai/manage_spaces.sh focus 8
+ctrl - 1: ~/.config/yabai/manage_spaces.sh focus 1
+ctrl - 2: ~/.config/yabai/manage_spaces.sh focus 2
+ctrl - 3: ~/.config/yabai/manage_spaces.sh focus 3
+ctrl - 4: ~/.config/yabai/manage_spaces.sh focus 4
+ctrl - 5: ~/.config/yabai/manage_spaces.sh focus 5
+ctrl - 6: ~/.config/yabai/manage_spaces.sh focus 6
+ctrl - 7: ~/.config/yabai/manage_spaces.sh focus 7
+ctrl - 8: ~/.config/yabai/manage_spaces.sh focus 8
 # send to space
-shift + cmd - 1: ~/.config/yabai/manage_spaces.sh send 1
-shift + cmd - 2: ~/.config/yabai/manage_spaces.sh send 2
-shift + cmd - 3: ~/.config/yabai/manage_spaces.sh send 3
-shift + cmd - 4: ~/.config/yabai/manage_spaces.sh send 4
-shift + cmd - 5: ~/.config/yabai/manage_spaces.sh send 5
-shift + cmd - 6: ~/.config/yabai/manage_spaces.sh send 6
-shift + cmd - 7: ~/.config/yabai/manage_spaces.sh send 7
-shift + cmd - 8: ~/.config/yabai/manage_spaces.sh send 8
+shift + ctrl - 1: ~/.config/yabai/manage_spaces.sh send 1
+shift + ctrl - 2: ~/.config/yabai/manage_spaces.sh send 2
+shift + ctrl - 3: ~/.config/yabai/manage_spaces.sh send 3
+shift + ctrl - 4: ~/.config/yabai/manage_spaces.sh send 4
+shift + ctrl - 5: ~/.config/yabai/manage_spaces.sh send 5
+shift + ctrl - 6: ~/.config/yabai/manage_spaces.sh send 6
+shift + ctrl - 7: ~/.config/yabai/manage_spaces.sh send 7
+shift + ctrl - 8: ~/.config/yabai/manage_spaces.sh send 8
 # rotate
 alt - r: yabai -m space --rotate 90
 alt - y: yabai -m space --mirror y-axis

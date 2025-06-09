@@ -18,20 +18,20 @@ PaperWM:bindHotkeys({
 
     -- Go to specific spaces. Doing this through OS shortcuts instead
     -- see Settings > Keyboard > Shortcuts > Mission Control
---     switch_space_1 = {{"cmd"}, "1"},
+--     switch_space_1 = {{"ctrl"}, "1"},
 
 
     -- Send to space
-    move_window_1 = {{"shift", "cmd"}, "1"},
-    move_window_2 = {{"shift", "cmd"}, "2"},
-    move_window_3 = {{"shift", "cmd"}, "3"},
-    move_window_4 = {{"shift", "cmd"}, "4"},
-    move_window_5 = {{"shift", "cmd"}, "5"},
-    move_window_6 = {{"shift", "cmd"}, "6"},
-    move_window_7 = {{"shift", "cmd"}, "7"},
-    move_window_8 = {{"shift", "cmd"}, "8"},
-    move_window_9 = {{"shift", "cmd"}, "9"},
-    move_window_10 = {{"shift", "cmd"}, "0"},
+    move_window_1 = {{"shift", "ctrl"}, "1"},
+    move_window_2 = {{"shift", "ctrl"}, "2"},
+    move_window_3 = {{"shift", "ctrl"}, "3"},
+    move_window_4 = {{"shift", "ctrl"}, "4"},
+    move_window_5 = {{"shift", "ctrl"}, "5"},
+    move_window_6 = {{"shift", "ctrl"}, "6"},
+    move_window_7 = {{"shift", "ctrl"}, "7"},
+    move_window_8 = {{"shift", "ctrl"}, "8"},
+    move_window_9 = {{"shift", "ctrl"}, "9"},
+    move_window_10 = {{"shift", "ctrl"}, "0"},
 
     -- Toggle float
     toggle_floating = {{"alt"}, "f"},
