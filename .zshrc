@@ -94,8 +94,10 @@ if command -v eza &> /dev/null; then
   alias eza="eza --classify"
   # from oh-my-zsh/eza
   alias recent="lT"
+  alias ls='eza --color=auto'
 else
   alias recent="ls -rt"
+  alias ls='ls -FG' # G is color, F is trailing slashes, etc.
 fi
 
 # Zsh from mambaforge doesn't set ZSH_VERSION for some reason
@@ -107,7 +109,6 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR="${HOME}/bin/editor.sh"
 
-alias ls='ls -FG' # G is color, F is trailing slashes, etc.
 alias sed='sed -r'
 alias curl='curl --location' # follow redirects
 export LESSOPEN="| ${LESSPIPE} %s"
