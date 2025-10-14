@@ -30,7 +30,7 @@ done
 # Try to find VS Code remote session without being inside its terminal.
 if [[ -z "$(which ${EXE_NAME})" && $(uname) == "Linux" ]]; then
     # Sort by mtime, newest first. Connecting to older ones might fail.
-    for f in $(find /proc -maxdepth 2 -readable -name environ -type f -printf '%T@ %p\n' | sort -n | cut -d' ' -f2-); do
+    for f in $(find /proc -maxdepth 2 -readable -name environ -type f -printf '%T@ %p\n' | sort -rn | cut -d' ' -f2-); do
       # check if process is running
       pid=$(basename $(dirname "${f}"))
       if ! ps -p "${pid}" >/dev/null 2>&1; then
