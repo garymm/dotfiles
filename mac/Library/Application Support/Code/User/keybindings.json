@@ -32,6 +32,10 @@
         "when": "editorTextFocus && foldingEnabled"
     },
     // End working around fold issue
+    {
+        "key": "cmd+l",
+        "command": "claude-vscode.sidebar.open"
+    },
     // Begin copy relative file path
     {
         "key": "shift+cmd+c",
@@ -41,7 +45,7 @@
     {
         "key": "shift+cmd+c",
         "command": "copyRelativeFilePath",
-        "when": "!editorFocus"
+        "when": "!terminalFocus"
     },
     {
         "key": "shift+alt+cmd+c",
@@ -49,18 +53,9 @@
         "when": "!editorFocus"
     },
     {
-        "key": "cmd+k shift+cmd+c",
-        "command": "copyRelativeFilePath",
-        "when": "editorFocus"
-    },
-    {
         "key": "cmd+k shift+alt+cmd+c",
         "command": "-copyRelativeFilePath",
         "when": "editorFocus"
-    },
-    // end copy relative file path
-    {
-        "key": "cmd+l",
-        "command": "claude-vscode.sidebar.open"
     }
+    // end copy relative file path
 ]
