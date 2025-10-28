@@ -190,3 +190,6 @@ if [ -n "${TMUX}" ]; then
 fi
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1 # Don't show virtualenv in prompt. Starship instead.
+
+# matches in very long lines are rarely useful
+alias rg='rg --max-columns=300'
