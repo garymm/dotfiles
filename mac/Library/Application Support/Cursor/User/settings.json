@@ -17,7 +17,7 @@
     "files.autoSave": "onFocusChange",
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
-    "git.autofetch": true,
+    "git.autofetch": false,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
     "githubPullRequests.pushBranch": "always",
