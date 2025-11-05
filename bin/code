@@ -11,11 +11,11 @@ export PATH=`echo $PATH | tr ":" "\n" | grep -v "${SCRIPT_DIR}" | xargs | tr " "
 # Move environment variables from tmux into shell
 if [[ -n "$TMUX" ]]; then
     prefix_len=$(expr length "VSCODE_IPC_HOOK_CLI=")
-    assignment=$(tmux show-environment | grep ^VSCODE_IPC_HOOK_CLI)
+    assignment=$(tmux show-environment | grep '^VSCODE_IPC_HOOK_CLI' || true)
     if [[ -n "${assignment}" ]]; then
         export VSCODE_IPC_HOOK_CLI="${assignment:${prefix_len}}"
         prefix_len=$(expr length "PATH=")
-        assignment=$(tmux show-environment | grep ^PATH)
+        assignment=$(tmux show-environment | grep '^PATH' || true)
         export PATH="${assignment:${prefix_len}}"
     fi
 fi
@@ -29,30 +29,76 @@ done
 
 # Try to find VS Code remote session without being inside its terminal.
 if [[ -z "$(which ${EXE_NAME})" && $(uname) == "Linux" ]]; then
-    # Sort by mtime, newest first. Connecting to older ones might fail.
-    for f in $(find /proc -maxdepth 2 -readable -name environ -type f -printf '%T@ %p\n' | sort -rn | cut -d' ' -f2-); do
-      # check if process is running
-      pid=$(basename $(dirname "${f}"))
-      if ! ps -p "${pid}" >/dev/null 2>&1; then
-          continue
-      fi
-      # convert null bytes to new lines with tr
-      if [[ -n $(tr '\0' '\n' < ${f} | grep 'VSCODE_IPC_HOOK_CLI=') ]]; then
-        while IFS= read -r -d $'\0' assignment; do
-            if [[ $assignment == VSCODE_IPC_HOOK_CLI=* ]]; then
-                prefix_len=$(expr length "VSCODE_IPC_HOOK_CLI=")
-                export VSCODE_IPC_HOOK_CLI="${assignment:${prefix_len}}"
+    # First, try to find the extension host process to get its socket
+    extensionhost_pid=$(pgrep -f 'node.*--type=extensionHost' | head -1)
+    if [[ -n "${extensionhost_pid}" ]]; then
+        # Look for any descendant process of the extension host that has VSCODE_IPC_HOOK_CLI
+        for pid in $(pgrep -P "${extensionhost_pid}"); do
+            if [[ -r "/proc/${pid}/environ" ]]; then
+                candidate_socket=$(tr '\0' '\n' < /proc/${pid}/environ 2>/dev/null | grep '^VSCODE_IPC_HOOK_CLI=' | cut -d= -f2-)
+                candidate_path=$(tr '\0' '\n' < /proc/${pid}/environ 2>/dev/null | grep '^PATH=' | cut -d= -f2-)
+                if [[ -n "${candidate_socket}" && -S "${candidate_socket}" ]]; then
+                    if lsof "${candidate_socket}" >/dev/null 2>&1; then
+                        export VSCODE_IPC_HOOK_CLI="${candidate_socket}"
+                        export PATH="${candidate_path}"
+                        break
+                    fi
+                fi
             fi
-            if [[ $assignment == PATH=* ]]; then
-                prefix_len=$(expr length "PATH=")
-                export PATH="${assignment:${prefix_len}}"
+            # Also check grandchildren (recursive search one level deep)
+            for gpid in $(pgrep -P "${pid}" 2>/dev/null); do
+                if [[ -r "/proc/${gpid}/environ" ]]; then
+                    candidate_socket=$(tr '\0' '\n' < /proc/${gpid}/environ 2>/dev/null | grep '^VSCODE_IPC_HOOK_CLI=' | cut -d= -f2-)
+                    candidate_path=$(tr '\0' '\n' < /proc/${gpid}/environ 2>/dev/null | grep '^PATH=' | cut -d= -f2-)
+                    if [[ -n "${candidate_socket}" && -S "${candidate_socket}" ]]; then
+                        if lsof "${candidate_socket}" >/dev/null 2>&1; then
+                            export VSCODE_IPC_HOOK_CLI="${candidate_socket}"
+                            export PATH="${candidate_path}"
+                            break 2
+                        fi
+                    fi
+                fi
+            done
+        done
+    fi
+
+    # Fallback: Sort by mtime, newest first, but exclude shell processes
+    if [[ -z "${VSCODE_IPC_HOOK_CLI}" ]]; then
+        for f in $(find /proc -maxdepth 2 -readable -name environ -type f -printf '%T@ %p\n' | sort -rn | cut -d' ' -f2-); do
+          pid=$(basename $(dirname "${f}"))
+          if ! ps -p "${pid}" >/dev/null 2>&1; then
+              continue
+          fi
+          # Skip interactive shell processes (they inherit but don't originate the socket)
+          cmdline=$(cat /proc/${pid}/cmdline 2>/dev/null | tr '\0' ' ')
+          if [[ "${cmdline}" =~ (bash|zsh|sh).*-i ]]; then
+              continue
+          fi
+          # convert null bytes to new lines with tr
+          if [[ -n $(tr '\0' '\n' < ${f} | grep 'VSCODE_IPC_HOOK_CLI=') ]]; then
+            candidate_socket=""
+            candidate_path=""
+            while IFS= read -r -d $'\0' assignment; do
+                if [[ $assignment == VSCODE_IPC_HOOK_CLI=* ]]; then
+                    prefix_len=$(expr length "VSCODE_IPC_HOOK_CLI=")
+                    candidate_socket="${assignment:${prefix_len}}"
+                fi
+                if [[ $assignment == PATH=* ]]; then
+                    prefix_len=$(expr length "PATH=")
+                    candidate_path="${assignment:${prefix_len}}"
+                fi
+            done < "${f}"
+            # Verify the socket exists and is being actively listened on
+            if [[ -n "${candidate_socket}" && -S "${candidate_socket}" ]]; then
+                if lsof "${candidate_socket}" >/dev/null 2>&1; then
+                    export VSCODE_IPC_HOOK_CLI="${candidate_socket}"
+                    export PATH="${candidate_path}"
+                    break
+                fi
             fi
-        done < "${f}"
-        if [[ -n "${VSCODE_IPC_HOOK_CLI}" ]]; then
-            break
-        fi
-      fi
-    done
+          fi
+        done
+    fi
 fi
 
 ${EXE_NAME} "$@"
