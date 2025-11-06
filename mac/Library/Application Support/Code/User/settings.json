@@ -27,5 +27,6 @@
     "search.quickOpen.includeHistory": false,
     "security.workspace.trust.untrustedFiles": "open",
     "workbench.editor.revealIfOpen": true,
-    "workbench.editor.untitled.hint": "hidden"
+    "workbench.editor.untitled.hint": "hidden",
+    "rust-analyzer.check.workspace": false, // only check the crate for the currently open file
 }
